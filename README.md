@@ -1,6 +1,6 @@
 <h1 align="center" id="title">DriveXpert Car Management App</h1>
 
-<p align="center"><img src="" alt="project-image"></p>
+<p align="center"><img src="https://github.com/Susan56789/drivexpert/blob/master/public/assets/images/logo.png?raw=true" alt="project-image" width="100%" height="300" /></p>
 
 <p id="description">DriveXpert Car Management App is a web application built with Vue.js for the frontend and Node.js with Express.js for the backend. It allows users to manage car data including adding new cars viewing existing cars and updating car information.</p>
 
@@ -8,11 +8,6 @@
 
 [https://drivexpert.vercel.app/](https://drivexpert.vercel.app/)
 
-<h2>Project Screenshots:</h2>
-
-<img src="https://github.com/Susan56789/drivexpert/blob/master/public/assets/images/logo.png?raw=true" alt="project-screenshot" width="100%" height="300" />
-
-  
   
 <h2>🧐 Features</h2>
 
