@@ -9,7 +9,7 @@ const routes = [
             {
                 path: '',
                 component: () => import('./components/HomePage.vue'),
-                meta: { breadcrumb: 'Home' }
+                meta: { breadcrumb: 'Home', title: 'Home' }
             }
         ]
     }
@@ -19,6 +19,12 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 
+});
+
+
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title || 'DrivExpert';
+    next();
 });
 
 
