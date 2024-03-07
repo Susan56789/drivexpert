@@ -11,7 +11,6 @@ import '@fortawesome/fontawesome-free/css/all.css';
 const app = createApp(App);
 
 
-
 // Use Axios globally
 app.config.globalProperties.$axios = axios;
 

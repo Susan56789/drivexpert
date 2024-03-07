@@ -6,26 +6,37 @@
                 <div class="row">
                     <div class="left-sec">
                         <div class="content">
-                            <h2>
-                                <span>DrivExpert <br>Automotive</span>
+                            <h2 class="text-5xl font-bold text-black">
+                                <span class="text-red-500">DrivExpert <br>Automotive</span>
                             </h2>
-                            <p>
+                            <p class="text-black">
                                 Satisfaction Driven, Expertly Delivered.
                             </p>
                         </div>
-                        <button class="discover-btn">
-                            <a href="#">discover </a> <span>
+                        <button class="discover-btn bg-d43242 text-white rounded-full flex items-center px-8 py-4 mt-8">
+                            <a href="#" class="text-xl font-semibold uppercase">discover </a> <span class="text-4xl ml-4">
                                 <i class="fa-solid fa-circle-arrow-right"></i>
                             </span>
                         </button>
-                        <div class="information">
-                            <div class="production">
-                                <p>Production</p>
-                                <h2>199</h2>
+                        <div class="information mt-8 flex">
+                            <div class="production mr-8">
+                                <p class="text-black">Production</p>
+                                <h2 class="text-2xl">199</h2>
                             </div>
                             <div class="production">
-                                <p>Designer</p>
-                                <h2>Sue</h2>
+                                <p class="text-black">Designer</p>
+                                <h2 class="text-2xl">Sue</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='right-sec'>
+                        <div class="my-car relative overflow-hidden">
+                            <div class="carousel">
+                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
+                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
+                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
+                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
+                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
                             </div>
                         </div>
                     </div>
@@ -124,5 +135,26 @@ export default {
 .production p {
     padding-right: 0;
     letter-spacing: 1px;
+}
+
+.right-sec{
+    width:70%;
+    padding-top: 100px;
+}
+
+.right-sec img{
+    width: 950px;
+    height: 550px;
+    margin: auto;
+    float: right;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel img {
+    margin: 0 10px;
 }
 </style>
