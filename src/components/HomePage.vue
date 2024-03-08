@@ -1,42 +1,38 @@
 <template>
-    <div>
+    <div class="container px-6 py-12 mx-auto">
         <section>
-
             <div class="hero">
                 <div class="row">
                     <div class="left-sec">
                         <div class="content">
-                            <h2 class="text-5xl font-bold text-black">
-                                <span class="text-red-500">DrivExpert <br>Automotive</span>
+                            <h2>
+                                <span>DrivExpert <br>Automotive</span>
                             </h2>
-                            <p class="text-black">
+                            <p>
                                 Satisfaction Driven, Expertly Delivered.
                             </p>
                         </div>
-                        <button class="discover-btn bg-d43242 text-white rounded-full flex items-center px-8 py-4 mt-8">
-                            <a href="#" class="text-xl font-semibold uppercase">discover </a> <span class="text-4xl ml-4">
+                        <button class="discover-btn">
+                            <a href="#">discover </a> <span>
                                 <i class="fa-solid fa-circle-arrow-right"></i>
                             </span>
                         </button>
-                        <div class="information mt-8 flex">
-                            <div class="production mr-8">
-                                <p class="text-black">Production</p>
-                                <h2 class="text-2xl">199</h2>
+                        <div class="information">
+                            <div class="production">
+                                <p>Production</p>
+                                <h2>199</h2>
                             </div>
                             <div class="production">
-                                <p class="text-black">Designer</p>
-                                <h2 class="text-2xl">Sue</h2>
+                                <p>Designer</p>
+                                <h2>Sue</h2>
                             </div>
                         </div>
                     </div>
                     <div class='right-sec'>
-                        <div class="my-car relative overflow-hidden">
-                            <div class="carousel">
-                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
-                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
-                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
-                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
-                                <img src='/assets/images/logo.png' class="w-950 h-550 mx-auto" />
+                        <div class="my-car">
+                            <div v-for="(item, index) in items" :key="index"
+                                :class="{ active: currentIndex === index }">
+                                <img :src="item.image" />
                             </div>
                         </div>
                     </div>
@@ -48,7 +44,38 @@
 
 <script>
 export default {
-    name: 'HomePage'
+    name: 'HomePage',
+    data() {
+        return {
+            currentIndex: 0,
+            items: [
+                { image: '/assets/images/car9.png' },
+                { image: '/assets/images/car2.png' },
+                { image: '/assets/images/car3.png' },
+                { image: '/assets/images/car4.png' },
+                { image: '/assets/images/car5.png' },
+            ]
+        };
+    },
+    methods: {
+        moveNext() {
+            this.currentIndex = (this.currentIndex + 1) % this.items.length;
+        },
+        startCarousel() {
+            this.carouselInterval = setInterval(() => {
+                this.moveNext();
+            }, 3000);
+        },
+        stopCarousel() {
+            clearInterval(this.carouselInterval);
+        }
+    },
+    mounted() {
+        this.startCarousel();
+    },
+    unmounted() {
+        this.stopCarousel();
+    }
 }
 </script>
 
@@ -137,24 +164,28 @@ export default {
     letter-spacing: 1px;
 }
 
-.right-sec{
-    width:70%;
-    padding-top: 100px;
-}
-
-.right-sec img{
-    width: 950px;
-    height: 550px;
-    margin: auto;
-    float: right;
-}
-
-.carousel {
+.my-car {
     display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.my-car div {
     transition: transform 0.5s ease;
 }
 
-.carousel img {
-    margin: 0 10px;
+.my-car div.active {
+    transform: translateX(0);
+}
+
+.my-car div:not(.active) {
+    transform: translateX(100%);
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.my-car img {
+    width: 100%;
 }
 </style>
