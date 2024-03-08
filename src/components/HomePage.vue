@@ -8,25 +8,26 @@
                             <h2>
                                 <span>DrivExpert <br>Automotive</span>
                             </h2>
-                            <p>
-                                Satisfaction Driven, Expertly Delivered.
-                            </p>
+                            <!-- <p>
+                                Your trusted destination for expert guidance, exceptional service, and a seamless
+                                car-buying experience. Discover your perfect vehicle with us today.
+                            </p> -->
                         </div>
                         <button class="discover-btn">
                             <a href="#">discover </a> <span>
                                 <i class="fa-solid fa-circle-arrow-right"></i>
                             </span>
                         </button>
-                        <div class="information">
+                        <!-- <div class="information">
                             <div class="production">
-                                <p>Production</p>
-                                <h2>199</h2>
+                                <h2>Inception</h2>
+                                <p>Established in 2010 by automotive enthusiasts with a vision.</p>
                             </div>
                             <div class="production">
-                                <p>Designer</p>
-                                <h2>Sue</h2>
+                                <h2>Evolution</h2>
+                                <p>From a local dealership to a global authority, DriveXpert redefines car buying.</p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class='right-sec'>
                         <div class="my-car">
@@ -113,7 +114,7 @@ export default {
     margin: 20px 0;
     color: #000;
     line-height: 29px;
-    padding-right: 50px;
+    /* padding-right: 50px; */
 
 }
 
@@ -163,6 +164,7 @@ export default {
     padding-right: 0;
     letter-spacing: 1px;
 }
+
 
 .my-car {
     display: flex;
