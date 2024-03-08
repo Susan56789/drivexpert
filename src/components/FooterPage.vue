@@ -57,7 +57,7 @@
                                     <a class="text-gray-500 cursor-pointer hover:text-gray-900">Careers</a>
                                 </li>
                                 <li class="mt-3">
-                                    <a class="text-gray-500 cursor-pointer hover:text-gray-900">Blog</a>
+                                    <a class="text-gray-500 cursor-pointer hover:text-gray-900">Sell Your Car</a>
                                 </li>
                             </nav>
                         </div>
