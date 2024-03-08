@@ -2,8 +2,8 @@
     <div class="container px-6 py-12 mx-auto">
         <section>
             <div class="hero">
-                <div class="row">
-                    <div class="left-sec">
+                <div class="row !grid md:!grid-cols-2 sm:!grid-cols-1">
+                    <div class="left-sec !col-span-1">
                         <div class="content">
                             <h2>
                                 <span>DrivExpert <br>Automotive</span>
@@ -29,7 +29,7 @@
                             </div>
                         </div> -->
                     </div>
-                    <div class='right-sec'>
+                    <div class='right-sec  !col-span-1'>
                         <div class="my-car">
                             <div v-for="(item, index) in items" :key="index"
                                 :class="{ active: currentIndex === index }">

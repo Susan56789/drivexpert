@@ -17,13 +17,8 @@
 
 @media screen and (max-width: 768px) {
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        font-size: 20px !important;
+    .left-sec h2 {
+        font-size: 30px !important;
 
     }
 
@@ -38,6 +33,18 @@
 
     .row {
         padding: 0 !important;
+    }
+
+    .discover-btn {
+        padding: 0 10px !important;
+    }
+
+    .discover-btn a {
+        font-size: 16px !important;
+    }
+
+    .discover-btn span {
+        font-size: 16px !important;
     }
 
 }
