@@ -10,7 +10,8 @@ const routes = [
                 path: '',
                 component: () => import('./components/HomePage.vue'),
                 meta: { breadcrumb: 'Home', title: 'Home' }
-            }
+            },
+
         ]
     }
 ]
