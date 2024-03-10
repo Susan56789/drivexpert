@@ -11,6 +11,11 @@ const routes = [
                 component: () => import('./components/HomePage.vue'),
                 meta: { breadcrumb: 'Home', title: 'Home' }
             },
+            {
+                path: '/about',
+                component: () => import('./components/AboutUs.vue'),
+                meta: { breadcrumb: 'About-Us', title: 'About-Us' }
+            },
 
         ]
     }

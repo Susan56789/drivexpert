@@ -2,27 +2,40 @@
     <div class="bg-gray-900 text-white">
         <div class="container mx-auto px-4 py-6 flex justify-between items-center">
             <div class="logo">
-                <a href="#" class="text-xl font-bold uppercase">DrivExpert</a>
+                <a href="/" class="text-xl font-bold uppercase">DrivExpert</a>
             </div>
             <div class="hidden md:block">
                 <ul class="flex space-x-6">
                     <li>
-                        <a href="#" class="text-gray-300 hover:text-white py-2 px-4 rounded-md transition duration-300"
-                            :class="{ 'bg-gray-700': isActive === 'Cars' }" @click="isActive = 'Cars'">Cars</a>
+                        <a href="/" class="text-gray-300 
+                        hover:text-white py-2 px-4 rounded-md transition duration-300"
+                            :class="{ 'bg-gray-700': isActive === 'Home' }"
+                             @click="isActive = 'Cars'">Home</a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-300 hover:text-white py-2 px-4 rounded-md transition duration-300"
-                            :class="{ 'bg-gray-700': isActive === 'About Us' }" @click="isActive = 'About Us'">About
+                        <a href="#" class="text-gray-300 
+                        hover:text-white py-2 px-4 rounded-md transition duration-300"
+                            :class="{ 'bg-gray-700': isActive === 'Cars' }"
+                             @click="isActive = 'Cars'">Cars</a>
+                    </li>
+                    <li>
+                        <a href="/about" class="text-gray-300 hover:text-white 
+                        py-2 px-4 rounded-md transition duration-300"
+                            :class="{ 'bg-gray-700': isActive === 'About Us' }"
+                             @click="isActive = 'About Us'">About
                             Us</a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-300 hover:text-white py-2 px-4 rounded-md transition duration-300"
+                        <a href="#" class="text-gray-300 hover:text-white 
+                        py-2 px-4 rounded-md transition duration-300"
                             :class="{ 'bg-gray-700': isActive === 'Contact Us' }"
                             @click="isActive = 'Contact Us'">Contact Us</a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-300 hover:text-white py-2 px-4 rounded-md transition duration-300"
-                            :class="{ 'bg-gray-700': isActive === 'Reviews' }" @click="isActive = 'Reviews'">Reviews</a>
+                        <a href="#" class="text-gray-300 hover:text-white py-2
+                         px-4 rounded-md transition duration-300"
+                            :class="{ 'bg-gray-700': isActive === 'Reviews' }"
+                             @click="isActive = 'Reviews'">Reviews</a>
                     </li>
                 </ul>
             </div>

@@ -51,7 +51,8 @@
                             </h2>
                             <nav class="mb-10 list-none">
                                 <li class="mt-3">
-                                    <a class="text-gray-500 cursor-pointer hover:text-gray-900">Company</a>
+                                    <a href="/about" class="text-gray-500 cursor-pointer 
+                                    hover:text-gray-900">Company</a>
                                 </li>
                                 <li class="mt-3">
                                     <a class="text-gray-500 cursor-pointer hover:text-gray-900">Careers</a>
