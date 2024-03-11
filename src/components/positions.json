@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "title": "Automotive Technician",
+        "description": "We are seeking a skilled and experienced automotive technician to join our team.",
+        "responsibilities": [
+            "Diagnose and repair various automotive systems",
+            "Maintain and repair electronic and mechanical components",
+            "Ensure high-quality workmanship and customer satisfaction"
+        ],
+        "status": "open"
+    },
+    {
+        "id": 2,
+        "title": "Sales Representative",
+        "description": "We are looking for a passionate and driven sales representative to join our sales team.",
+        "responsibilities": [
+            "Develop and maintain relationships with customers",
+            "Achieve sales targets and goals",
+            "Provide exceptional customer service"
+        ],
+        "status": "open"
+    },
+    {
+        "id": 3,
+        "title": "Marketing Manager",
+        "description": "We are seeking an experienced marketing manager to lead our marketing efforts.",
+        "responsibilities": [
+            "Develop and execute marketing strategies",
+            "Manage marketing campaigns and initiatives",
+            "Analyze and report on marketing metrics"
+        ],
+        "status": "closed"
+    }
+]

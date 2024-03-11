@@ -33,7 +33,7 @@
                         <div class="my-car">
                             <div v-for="(item, index) in items" :key="index"
                                 :class="{ active: currentIndex === index }">
-                                <img :src="item.image" />
+                                <img :src="item.image" alt="Drivexpert-Display-Cars" />
                             </div>
                         </div>
                     </div>
