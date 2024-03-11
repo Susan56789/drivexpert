@@ -9,33 +9,29 @@
                     <li>
                         <a href="/" class="text-gray-300 
                         hover:text-white py-2 px-4 rounded-md transition duration-300"
-                            :class="{ 'bg-gray-700': isActive === 'Home' }"
-                             @click="isActive = 'Cars'">Home</a>
+                            :class="{ 'bg-gray-700': isActive === 'Home' }" @click="isActive = 'Cars'">Home</a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-300 
                         hover:text-white py-2 px-4 rounded-md transition duration-300"
-                            :class="{ 'bg-gray-700': isActive === 'Cars' }"
-                             @click="isActive = 'Cars'">Cars</a>
+                            :class="{ 'bg-gray-700': isActive === 'Cars' }" @click="isActive = 'Cars'">Cars</a>
                     </li>
                     <li>
                         <a href="/about" class="text-gray-300 hover:text-white 
                         py-2 px-4 rounded-md transition duration-300"
-                            :class="{ 'bg-gray-700': isActive === 'About Us' }"
-                             @click="isActive = 'About Us'">About
+                            :class="{ 'bg-gray-700': isActive === 'About Us' }" @click="isActive = 'About Us'">About
                             Us</a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-300 hover:text-white 
+                        <a href="/contact" class="text-gray-300 hover:text-white 
                         py-2 px-4 rounded-md transition duration-300"
                             :class="{ 'bg-gray-700': isActive === 'Contact Us' }"
                             @click="isActive = 'Contact Us'">Contact Us</a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-300 hover:text-white py-2
-                         px-4 rounded-md transition duration-300"
-                            :class="{ 'bg-gray-700': isActive === 'Reviews' }"
-                             @click="isActive = 'Reviews'">Reviews</a>
+                         px-4 rounded-md transition duration-300" :class="{ 'bg-gray-700': isActive === 'Reviews' }"
+                            @click="isActive = 'Reviews'">Reviews</a>
                     </li>
                 </ul>
             </div>
