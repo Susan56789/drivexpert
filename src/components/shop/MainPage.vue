@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="grid grid-cols-4 gap-4">
-            <CarItem v-for="car in displayedCars" :key="car.model_id" :car="car" />
+            <CarItem v-for="car in displayedCars" :key="car.model_id" :car="car" :makes="makes" :models="models" />
         </div>
         <Pagination :total="totalPages" @page-change="changePage" />
     </div>
@@ -44,8 +44,8 @@ export default {
     data() {
         return {
             cars: [],
-            makes: {},
-            models: {},
+            makes: [],
+            models: [],
             selectedMake: '',
             selectedModel: '',
             minPrice: null,
@@ -83,8 +83,8 @@ export default {
                 const response = await axios.get('http://localhost:3000/api/cars');
                 this.cars = response.data;
 
-                const makeIds = this.cars.map(car => car.make_id);
-                const modelIds = this.cars.map(car => car.model_id);
+                const makeIds = [...new Set(this.cars.map(car => car.make_id))];
+                const modelIds = [...new Set(this.cars.map(car => car.model_id))];
 
                 await Promise.all([
                     this.fetchMakes(makeIds),
@@ -98,9 +98,7 @@ export default {
         async fetchMakes(makeIds) {
             try {
                 const response = await axios.get(`http://localhost:3000/api/makes?ids=${makeIds.join(',')}`);
-                response.data.forEach(make => {
-                    this.makes[make.id] = make.name;
-                });
+                this.makes = response.data;
             } catch (error) {
                 console.error(error);
                 // Handle error gracefully
@@ -109,9 +107,7 @@ export default {
         async fetchModels(modelIds) {
             try {
                 const response = await axios.get(`http://localhost:3000/api/models?ids=${modelIds.join(',')}`);
-                response.data.forEach(model => {
-                    this.makes[model.id] = model.name;
-                });
+                this.models = response.data;
             } catch (error) {
                 console.error(error);
                 // Handle error gracefully
