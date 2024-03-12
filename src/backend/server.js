@@ -49,8 +49,11 @@ client.connect((err) => {
 
 });
 
+
 //API ROUTES
 require('./routes/cars')(app, client);
+require('./routes/makes')(app, client);
+require('./routes/models')(app, client);
 
 
 

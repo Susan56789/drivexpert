@@ -114,3 +114,4 @@ ADD COLUMN model_id INT NOT NULL,
 ADD FOREIGN KEY (make_id) REFERENCES make(id),
 ADD FOREIGN KEY (model_id) REFERENCES model(id);
 
+SELECT * FROM cars;

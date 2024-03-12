@@ -36,6 +36,11 @@ const routes = [
                 component: () => import('./components/SellCar.vue'),
                 meta: { breadcrumb: 'Sell Your Car', title: 'Sell Your Car' }
             },
+            {
+                path: '/cars',
+                component: () => import('./components/shop/MainPage.vue'),
+                meta: { breadcrumb: 'Cars', title: 'Cars' }
+            },
 
         ]
     }
