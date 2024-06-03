@@ -79,6 +79,7 @@ app.get("/", (req, res) => {
 
 //ROUTES
 require('./routes/cars')(client, app, authenticate, ObjectId);
+require('./routes/users')(client, app, authenticate);
 
 
 app.listen(PORT, () => {

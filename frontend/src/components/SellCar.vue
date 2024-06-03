@@ -24,29 +24,32 @@
             <div class="md:w-2/3">
                 <h1 class="text-3xl font-bold mb-8 text-center">Sell Your Car</h1>
                 <div class="bg-white rounded-lg shadow-md p-8">
-                    <form @submit.prevent="submitForm" class="space-y-4">
+                    <!-- Car Form -->
+                    <form @submit.prevent="submitCarForm" class="space-y-4">
+                        <h2 class="text-xl font-semibold mb-4">Car Information</h2>
+
                         <!-- Name Field -->
                         <div class="mb-4">
                             <label class="block text-gray-700 font-semibold mb-2" for="name">Name</label>
                             <input
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                                id="name" v-model="form.name" required />
+                                id="name" v-model="carForm.name" required />
                         </div>
 
-                        <!-- Model Field -->
+                        <!-- Fuel Type Field -->
                         <div class="mb-4">
-                            <label class="block text-gray-700 font-semibold mb-2" for="model">Model</label>
+                            <label class="block text-gray-700 font-semibold mb-2" for="fuelType">Fuel Type</label>
                             <input
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                                id="model" v-model="form.model" required />
+                                id="fuelType" v-model="carForm.fuelType" required />
                         </div>
 
-                        <!-- Year Field -->
+                        <!-- Engine Size Field -->
                         <div class="mb-4">
-                            <label class="block text-gray-700 font-semibold mb-2" for="year">Year</label>
+                            <label class="block text-gray-700 font-semibold mb-2" for="engineSize">Engine Size</label>
                             <input
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                                id="year" v-model.number="form.year" type="number" required />
+                                id="engineSize" v-model="carForm.engineSize" required />
                         </div>
 
                         <!-- Mileage Field -->
@@ -54,7 +57,7 @@
                             <label class="block text-gray-700 font-semibold mb-2" for="mileage">Mileage</label>
                             <input
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                                id="mileage" v-model.number="form.mileage" type="number" required />
+                                id="mileage" v-model.number="carForm.mileage" type="number" required />
                         </div>
 
                         <!-- Price Field -->
@@ -62,7 +65,24 @@
                             <label class="block text-gray-700 font-semibold mb-2" for="price">Price</label>
                             <input
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                                id="price" v-model.number="form.price" type="number" required />
+                                id="price" v-model.number="carForm.price" type="number" required />
+                        </div>
+
+                        <!-- Year Field -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-semibold mb-2" for="year">Year</label>
+                            <input
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                id="year" v-model.number="carForm.year" type="number" required />
+                        </div>
+
+                        <!-- Current Location Field -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-semibold mb-2" for="currentLocation">Current
+                                Location</label>
+                            <input
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                id="currentLocation" v-model="carForm.currentLocation" required />
                         </div>
 
                         <!-- Description Field -->
@@ -70,7 +90,7 @@
                             <label class="block text-gray-700 font-semibold mb-2" for="description">Description</label>
                             <textarea
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                                id="description" v-model="form.description" rows="4" required></textarea>
+                                id="description" v-model="carForm.description" rows="4" required></textarea>
                         </div>
 
                         <!-- Image Upload Field -->
@@ -92,10 +112,10 @@
                         </div>
 
                         <!-- Image Preview -->
-                        <div v-if="form.images.length" class="mt-4">
+                        <div v-if="carForm.images.length" class="mt-4">
                             <h3 class="text-lg font-semibold mb-2">Image Preview:</h3>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                <div v-for="(image, index) in form.images" :key="index" class="relative">
+                                <div v-for="(image, index) in carForm.images" :key="index" class="relative">
                                     <img :src="image.preview" alt="Preview"
                                         class="w-full h-32 object-cover rounded-md" />
                                     <button @click="removeImage(index)"
@@ -107,7 +127,41 @@
                         <!-- Submit Button -->
                         <button
                             class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-all duration-300"
-                            type="submit">Submit</button>
+                            type="submit">Submit Car Info</button>
+                    </form>
+
+                    <!-- Seller Form -->
+                    <form @submit.prevent="submitSellerForm" class="space-y-4 mt-8">
+                        <h2 class="text-xl font-semibold mb-4">Seller Information</h2>
+
+                        <!-- Seller Name Field -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-semibold mb-2" for="sellerName">Seller Name</label>
+                            <input
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                id="sellerName" v-model="sellerForm.name" required />
+                        </div>
+
+                        <!-- Seller Email Field -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-semibold mb-2" for="sellerEmail">Seller Email</label>
+                            <input
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                id="sellerEmail" v-model="sellerForm.email" type="email" required />
+                        </div>
+
+                        <!-- Seller Phone Field -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-semibold mb-2" for="sellerPhone">Seller Phone</label>
+                            <input
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                id="sellerPhone" v-model="sellerForm.phone" type="tel" required />
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button
+                            class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-all duration-300"
+                            type="submit">Submit Seller Info</button>
                     </form>
                 </div>
             </div>
@@ -122,14 +176,21 @@ export default {
     name: 'SellCar',
     data() {
         return {
-            form: {
+            carForm: {
                 name: '',
-                model: '',
-                year: '',
+                fuelType: '',
+                engineSize: '',
                 mileage: '',
                 price: '',
+                year: '',
+                currentLocation: '',
                 description: '',
                 images: [],
+            },
+            sellerForm: {
+                name: '',
+                email: '',
+                phone: ''
             },
         };
     },
@@ -139,25 +200,27 @@ export default {
             files.forEach(file => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    this.form.images.push({ file, preview: e.target.result });
+                    this.carForm.images.push({ file, preview: e.target.result });
                 };
                 reader.readAsDataURL(file);
             });
         },
         removeImage(index) {
-            this.form.images.splice(index, 1);
+            this.carForm.images.splice(index, 1);
         },
-        async submitForm() {
+        async submitCarForm() {
             try {
                 const formData = new FormData();
-                formData.append('name', this.form.name);
-                formData.append('model', this.form.model);
-                formData.append('year', this.form.year);
-                formData.append('mileage', this.form.mileage);
-                formData.append('price', this.form.price);
-                formData.append('description', this.form.description);
+                formData.append('name', this.carForm.name);
+                formData.append('fuelType', this.carForm.fuelType);
+                formData.append('engineSize', this.carForm.engineSize);
+                formData.append('mileage', this.carForm.mileage);
+                formData.append('price', this.carForm.price);
+                formData.append('year', this.carForm.year);
+                formData.append('currentLocation', this.carForm.currentLocation);
+                formData.append('description', this.carForm.description);
 
-                this.form.images.forEach((image, index) => {
+                this.carForm.images.forEach((image, index) => {
                     formData.append(`images[${index}]`, image.file);
                 });
 
@@ -170,7 +233,7 @@ export default {
 
                 if (response.status === 201) {
                     alert('Car posted successfully!');
-                    this.resetForm();
+                    this.resetCarForm();
                 } else {
                     alert('Failed to post car.');
                 }
@@ -179,17 +242,45 @@ export default {
                 alert('An error occurred while posting the car.');
             }
         },
-        resetForm() {
-            this.form = {
+        async submitSellerForm() {
+            try {
+                const response = await axios.post('https://drivexpert.onrender.com/api/users', this.sellerForm, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.status === 201) {
+                    alert('Seller information submitted successfully!');
+                    this.resetSellerForm();
+                } else {
+                    alert('Failed to submit seller information.');
+                }
+            } catch (error) {
+                console.error('Error submitting seller information:', error);
+                alert('An error occurred while submitting the seller information.');
+            }
+        },
+        resetCarForm() {
+            this.carForm = {
                 name: '',
-                model: '',
-                year: '',
+                fuelType: '',
+                engineSize: '',
                 mileage: '',
                 price: '',
+                year: '',
+                currentLocation: '',
                 description: '',
                 images: [],
             };
             document.getElementById('images-input').value = '';
+        },
+        resetSellerForm() {
+            this.sellerForm = {
+                name: '',
+                email: '',
+                phone: ''
+            };
         },
     },
 };
