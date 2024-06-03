@@ -18,10 +18,35 @@ module.exports = (client, app, authenticate, ObjectId) => {
             const database = client.db("driveexpert");
             const cars = database.collection("cars");
 
-            const newCar = req.body;
+            // Extract car data from the request body
+            const { name, fuelType, engineSize, mileage, price, year, currentLocation, description, images } = req.body;
+
+            // Validate required fields
+            if (!name || !fuelType || !engineSize || !mileage || !price || !year || !currentLocation || !description || !images) {
+                return res.status(400).json({ message: 'Missing required fields' });
+            }
+
+            // Create a new car object
+            const newCar = {
+                name,
+                fuelType,
+                engineSize,
+                mileage: parseInt(mileage),
+                price: parseFloat(price),
+                year: parseInt(year),
+                currentLocation,
+                description,
+                images,
+                createdAt: new Date()
+            };
+
+            // Insert the new car into the database
             const result = await cars.insertOne(newCar);
+
+            // Send a success response with the inserted car data
             res.status(201).json({ _id: result.insertedId, ...newCar });
         } catch (err) {
+            // Send an error response if something goes wrong
             res.status(500).json({ message: 'Error posting car', error: err.message });
         }
     });
