@@ -65,7 +65,7 @@ Technologies used in the project:
 *   Axios
 *   Node.js
 *   Express.js
-*   PostgreSQL
+*   MongoDB
 *   Tailwind CSS
 
 <h2>🍰 Contribution Guidelines:</h2>
