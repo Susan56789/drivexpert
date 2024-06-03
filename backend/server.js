@@ -60,8 +60,8 @@ async function run() {
         await client.connect();
         console.log("Connected to the database");
 
-        const database = client.db("sample_mflix");
-        const movies = database.collection("movies");
+        const database = client.db("driveexpert");
+        const cars = database.collection("cars");
         const users = database.collection("users");
         console.log("Collections initialized");
     } catch (err) {
@@ -78,6 +78,7 @@ app.get("/", (req, res) => {
 
 
 //ROUTES
+require('./routes/cars')(client, app, authenticate, ObjectId);
 
 
 app.listen(PORT, () => {

@@ -1,10 +1,6 @@
 <template>
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <div v-for="(car, index) in displayedCars" :key="index" class="border p-4">
-            <img :src="car.image_path" alt="Car Image" class="w-full mb-2">
-            <p class="font-bold">{{ getMakeName(car.make_id) }} - {{ getModelName(car.model_id) }}</p>
-            <p class="text-gray-700">Price: ${{ car.price }}</p>
-        </div>
+        <CarItem v-for="(car, index) in displayedCars" :key="index" :car="car" :makes="makes" :models="models" />
     </div>
     <div class="mt-4 flex justify-center">
         <button @click="prevPage" :disabled="currentPage === 1" class="mr-2 px-4 py-2 bg-gray-200"
@@ -15,8 +11,13 @@
 </template>
 
 <script>
+import CarItem from './CarItem.vue';
+
 export default {
     name: 'CarList',
+    components: {
+        CarItem
+    },
     props: {
         cars: {
             type: Array,
@@ -27,14 +28,13 @@ export default {
         return {
             currentPage: 1,
             pageSize: 12,
-            makes: [], // Initialize makes array
-            models: [] // Initialize models array
+            makes: [],
+            models: []
         };
     },
     mounted() {
-
-        this.fetchCarMake();
-        this.fetchCarModel();
+        this.fetchCarMakes();
+        this.fetchCarModels();
     },
     computed: {
         totalPages() {
@@ -57,29 +57,21 @@ export default {
                 this.currentPage--;
             }
         },
-        getMakeName(makeId) {
-            const make = this.makes.find(make => make.id === makeId);
-            return make ? make.name : 'Unknown';
+        async fetchCarMakes() {
+            try {
+                const response = await fetch('https://drivexpert.onrender.com/api/car-makes');
+                this.makes = await response.json();
+            } catch (error) {
+                console.error('Error fetching car makes:', error);
+            }
         },
-        getModelName(modelId) {
-            const model = this.models.find(model => model.id === modelId);
-            return model ? model.name : 'Unknown';
-        }
-    },
-    async fetchCarMake() {
-        try {
-            const response = await fetch('http://localhost:3000/api/makes');
-            this.makes = await response.json();
-        } catch (error) {
-            console.error(error);
-        }
-    },
-    async fetchCarModel() {
-        try {
-            const response = await fetch('http://localhost:3000/api/models');
-            this.models = await response.json();
-        } catch (error) {
-            console.error(error);
+        async fetchCarModels() {
+            try {
+                const response = await fetch('https://drivexpert.onrender.com/api/car-models');
+                this.models = await response.json();
+            } catch (error) {
+                console.error('Error fetching car models:', error);
+            }
         }
     }
 };

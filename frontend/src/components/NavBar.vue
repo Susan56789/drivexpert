@@ -12,7 +12,7 @@
                             :class="{ 'bg-gray-700': isActive === 'Home' }" @click="isActive = 'Cars'">Home</a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-300 
+                        <a href="/cars" class="text-gray-300 
                         hover:text-white py-2 px-4 rounded-md transition duration-300"
                             :class="{ 'bg-gray-700': isActive === 'Cars' }" @click="isActive = 'Cars'">Cars</a>
                     </li>
@@ -49,7 +49,7 @@
         <div v-show="isOpen" class="md:hidden">
             <ul class="bg-gray-800 py-4 px-6 space-y-2">
                 <li>
-                    <a href="#"
+                    <a href="/cars"
                         class="block text-gray-300 hover:text-white py-2 px-4 rounded-md transition duration-300"
                         :class="{ 'bg-gray-700': isActive === 'Cars' }" @click="isActive = 'Cars'">Cars</a>
                 </li>
