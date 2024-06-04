@@ -4,7 +4,6 @@ module.exports = (client, app, authenticate, bcrypt, jwt) => {
     const users = database.collection("users");
 
     // User Registration Endpoint
-    // User Registration Endpoint
     app.post('/api/users/register', async (req, res) => {
         try {
             const { name, email, password, phone } = req.body;

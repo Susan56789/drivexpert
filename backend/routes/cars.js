@@ -5,7 +5,7 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
     app.post('/api/cars', authenticate, async (req, res) => {
         try {
             // Verify and decode the token
-            const decodedToken = jwt.verify(req.token, process.env.JWT_SECRET);
+            const decodedToken = jwt.verify(process.env.JWT_SECRET || 'secretkey');
 
             // Extract user information from the decoded token
             const { name, email, phone } = decodedToken;
