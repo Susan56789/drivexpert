@@ -33,10 +33,8 @@ export default {
                     email: this.email,
                     password: this.password
                 };
-                console.log('Request payload:', payload);
 
                 const response = await axios.post('https://drivexpert.onrender.com/api/users/login', payload);
-                console.log('Response:', response);
 
                 localStorage.setItem('token', response.data.token);
                 this.$router.push('/dashboard');
@@ -59,7 +57,7 @@ export default {
 }
 
 .btn {
-    background-color: #4CAF50;
+    background-color: #eb1212;
     color: white;
     padding: 10px;
     margin: 8px 0;
@@ -69,11 +67,11 @@ export default {
 }
 
 .btn:hover {
-    background-color: #45a049;
+    background-color: #eb1216;
 }
 
 .link {
-    color: #4CAF50;
+    color: #eb1212;
     text-decoration: none;
 }
 

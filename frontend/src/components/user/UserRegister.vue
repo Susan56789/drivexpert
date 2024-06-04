@@ -35,8 +35,9 @@ export default {
                     password: this.password,
                     phone: this.phone
                 });
-                console.log(response.data);
                 this.$router.push('/login');
+
+                return response;
             } catch (error) {
                 console.error(error);
             }

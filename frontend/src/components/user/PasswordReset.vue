@@ -49,7 +49,7 @@ export default {
 }
 
 .btn {
-    background-color: #4CAF50;
+    background-color: #eb1212;
     color: white;
     padding: 10px;
     margin: 8px 0;
@@ -59,6 +59,6 @@ export default {
 }
 
 .btn:hover {
-    background-color: #45a049;
+    background-color: #eb1212;
 }
 </style>

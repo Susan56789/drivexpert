@@ -4,12 +4,19 @@ module.exports = (client, app, authenticate, bcrypt, jwt) => {
     const users = database.collection("users");
 
     // User Registration Endpoint
+    // User Registration Endpoint
     app.post('/api/users/register', async (req, res) => {
         try {
             const { name, email, password, phone } = req.body;
 
             if (!name || !email || !password || !phone) {
                 return res.status(400).json({ message: 'All fields are required' });
+            }
+
+            // Check if the email already exists
+            const existingUser = await users.findOne({ email });
+            if (existingUser) {
+                return res.status(400).json({ message: 'Email already exists' });
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -43,7 +50,7 @@ module.exports = (client, app, authenticate, bcrypt, jwt) => {
             }
 
             const token = jwt.sign(
-                { _id: user._id, name: user.name, email: user.email },
+                { _id: user._id, name: user.name, email: user.email, phone: user.phone },
                 process.env.JWT_SECRET || 'secretkey',
                 { expiresIn: '1h' }
             );
@@ -57,7 +64,8 @@ module.exports = (client, app, authenticate, bcrypt, jwt) => {
 
     // User Profile Endpoint
     app.get('/api/users/profile', authenticate, (req, res) => {
-        res.json(req.user);
+        const { _id, name, email, phone } = req.user;
+        res.json({ _id, name, email, phone });
     });
 
 
