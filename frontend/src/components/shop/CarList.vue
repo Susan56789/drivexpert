@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <CarItem v-for="(car, index) in displayedCars" :key="index" :car="car" :makes="makes" :models="models" />
+        <CarItem v-for="car in displayedCars" :key="car._id" :car="car" />
     </div>
     <div class="mt-4 flex justify-center">
         <button @click="prevPage" :disabled="currentPage === 1" class="mr-2 px-4 py-2 bg-gray-200"
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import CarItem from './CarItem.vue';
 
 export default {
@@ -18,23 +19,15 @@ export default {
     components: {
         CarItem
     },
-    props: {
-        cars: {
-            type: Array,
-            required: true
-        }
-    },
     data() {
         return {
+            cars: [],
             currentPage: 1,
-            pageSize: 12,
-            makes: [],
-            models: []
+            pageSize: 12
         };
     },
-    mounted() {
-        this.fetchCarMakes();
-        this.fetchCarModels();
+    async created() {
+        await this.fetchCars();
     },
     computed: {
         totalPages() {
@@ -47,6 +40,14 @@ export default {
         }
     },
     methods: {
+        async fetchCars() {
+            try {
+                const response = await axios.get('https://drivexpert.onrender.com/api/cars');
+                this.cars = response.data;
+            } catch (error) {
+                console.error('Error fetching cars:', error);
+            }
+        },
         nextPage() {
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
@@ -56,23 +57,11 @@ export default {
             if (this.currentPage > 1) {
                 this.currentPage--;
             }
-        },
-        async fetchCarMakes() {
-            try {
-                const response = await fetch('https://drivexpert.onrender.com/api/car-makes');
-                this.makes = await response.json();
-            } catch (error) {
-                console.error('Error fetching car makes:', error);
-            }
-        },
-        async fetchCarModels() {
-            try {
-                const response = await fetch('https://drivexpert.onrender.com/api/car-models');
-                this.models = await response.json();
-            } catch (error) {
-                console.error('Error fetching car models:', error);
-            }
         }
     }
 };
 </script>
+
+<style scoped>
+/* Add any scoped styles for your component here */
+</style>

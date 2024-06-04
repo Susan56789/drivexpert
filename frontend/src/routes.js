@@ -36,6 +36,13 @@ const routes = [
                 meta: { breadcrumb: 'Cars', title: 'Cars' }
             },
             {
+                path: '/cars/:id',
+                name: 'CarDetails',
+                component: () => import('./components/shop/CarDetails.vue'),
+                meta: { breadcrumb: 'CarDetails', title: 'CarDetails' },
+                props: true
+            },
+            {
                 path: '/login',
                 component: () => import('./components/user/UserLogin.vue'),
                 meta: { breadcrumb: 'Login', title: 'Login' }

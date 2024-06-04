@@ -30,22 +30,26 @@ export default {
     },
     async created() {
         const token = localStorage.getItem('token');
+
         if (!token) {
             this.$router.push('/login');
-        } else {
-            try {
-                const response = await axios.get('https://drivexpert.onrender.com/api/cars/sold', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                this.cars = response.data;
-            } catch (error) {
-                console.error('Error fetching sold cars:', error);
-            }
+            return;
+        }
+
+        try {
+            const response = await axios.get('http://localhost:5000/api/cars/sold', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            this.cars = response.data;
+        } catch (error) {
+            console.error('Error fetching sold cars:', error.response ? error.response.data : error.message);
         }
     }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Add any scoped styles for your component here */
+</style>

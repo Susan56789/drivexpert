@@ -1,27 +1,36 @@
 <template>
-    <div class="border border-gray-300 p-4">
-        <img :src="car.image_path" alt="Car Image" class="w-full h-48 object-cover mb-4">
-        <div class="text-xl font-bold mb-2">{{ getMakeName(car.make_id) }} - {{ getModelName(car.model_id) }}</div>
-        <div class="text-lg mb-2">{{ car.price }}</div>
+    <div class="car-item bg-white rounded-lg shadow-md p-4">
+        <router-link :to="`/cars/${car._id}`">
+            <img :src="'https://drivexpert.onrender.com/uploads/' + car.images[0]" :alt="car.carName"
+                class="w-full h-48 object-cover rounded-md" />
+            <h2 class="text-xl font-semibold mt-2">{{ car.carName }}</h2>
+        </router-link>
+        <p><strong>Price:</strong> ${{ car.price }}</p>
+        <p><strong>Year:</strong> {{ car.year }}</p>
+        <p><strong>Fuel Type:</strong> {{ car.fuelType }}</p>
+        <p><strong>Engine Size:</strong> {{ car.engineSize }}</p>
+        <p><strong>Mileage:</strong> {{ car.mileage }}</p>
+        <p><strong>Location:</strong> {{ car.currentLocation }}</p>
+        <p class="mt-2">{{ car.description }}</p>
     </div>
 </template>
-
 <script>
 export default {
+    name: 'CarItem',
     props: {
-        car: Object,
-        makes: Array,
-        models: Array
-    },
-    methods: {
-        getMakeName(makeId) {
-            const make = this.makes.find(make => make.id === makeId);
-            return make ? make.name : 'Unknown';
-        },
-        getModelName(modelId) {
-            const model = this.models.find(model => model.id === modelId);
-            return model ? model.name : 'Unknown';
+        car: {
+            type: Object,
+            required: true
         }
     }
-}
+};
 </script>
+<style scoped>
+.car-item {
+    transition: transform 0.3s;
+}
+
+.car-item:hover {
+    transform: scale(1.05);
+}
+</style>
