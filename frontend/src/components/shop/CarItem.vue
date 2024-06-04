@@ -1,7 +1,7 @@
 <template>
     <div class="car-item bg-white rounded-lg shadow-md p-4">
         <router-link :to="`/cars/${car._id}`">
-            <img :src="'https://drivexpert.onrender.com/uploads/' + car.images[0]" :alt="car.carName"
+            <img :src="'https://drivexpert.onrender.com/uploads/' + car.images[0].jpg" :alt="car.carName"
                 class="w-full h-48 object-cover rounded-md" />
             <h2 class="text-xl font-semibold mt-2">{{ car.carName }}</h2>
         </router-link>

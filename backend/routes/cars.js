@@ -2,7 +2,22 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
     const database = client.db("driveexpert");
     const cars = database.collection("cars");
     const multer = require('multer');
-    const upload = multer({ dest: 'uploads/' });
+    const upload = multer({
+        dest: 'uploads/',
+        fileFilter: (req, file, cb) => {
+            if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/webp') {
+                cb(null, true);
+            } else {
+                cb(new Error('Only JPEG, PNG, and WebP files are allowed'));
+            }
+        }
+    }); // Allow JPEG, PNG, and WebP files
+    const express = require('express');
+    const path = require('path');
+
+
+    // Set up static file serving
+    app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
         try {
@@ -49,6 +64,7 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
             res.status(500).json({ message: "Error posting car", error: error.message });
         }
     });
+
 
     app.get('/api/cars', async (req, res) => {
         try {
