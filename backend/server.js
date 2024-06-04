@@ -24,22 +24,32 @@ const client = new MongoClient(uri);
 app.use(cors());
 app.use(bodyParser.json());
 
-const authenticate = async (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1];
-    if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
-
+const authenticate = (req, res, next) => {
     try {
-        const decoded = jwt.verify(token, 'secretkey');
-        const database = client.db('driveexpert');
-        const users = database.collection('users');
-        const user = await users.findOne({ _id: new ObjectId(decoded._id) });
+        // Get the token from the Authorization header
+        const authHeader = req.headers.authorization;
+        const token = authHeader && authHeader.split(' ')[1];
 
-        if (!user) return res.status(400).json({ message: 'Invalid token.' });
+        // If no token is provided, return an error
+        if (!token) {
+            console.error('No token provided');
+            return res.status(401).json({ message: 'No token provided' });
+        }
 
-        req.user = user;
-        next();
-    } catch (err) {
-        res.status(400).json({ message: 'Invalid token.' });
+        // Verify the token
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                console.error('Failed to verify token:', err);
+                return res.status(400).json({ message: 'Invalid token' });
+            }
+
+            // If token is valid, set the decoded payload on the request object
+            req.user = decoded;
+            next();
+        });
+    } catch (error) {
+        console.error('Error in authenticate middleware:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 
