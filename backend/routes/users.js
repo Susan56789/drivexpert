@@ -3,37 +3,63 @@ module.exports = (client, app, authenticate, bcrypt, jwt) => {
     const database = client.db("driveexpert");
     const users = database.collection("users");
 
+    // User Registration Endpoint
     app.post('/api/users/register', async (req, res) => {
         try {
             const { name, email, password, phone } = req.body;
+
+            if (!name || !email || !password || !phone) {
+                return res.status(400).json({ message: 'All fields are required' });
+            }
+
             const hashedPassword = await bcrypt.hash(password, 10);
             const newUser = { name, email, password: hashedPassword, phone };
             const result = await users.insertOne(newUser);
+
             res.status(201).json(result);
         } catch (error) {
-            res.status(500).json({ message: "Error registering user", error });
+            console.error('Error registering user:', error);
+            res.status(500).json({ message: 'Error registering user', error });
         }
     });
 
+    // User Login Endpoint
     app.post('/api/users/login', async (req, res) => {
         try {
             const { email, password } = req.body;
+
+            if (!email || !password) {
+                return res.status(400).json({ message: 'Email and password are required' });
+            }
+
             const user = await users.findOne({ email });
-            if (!user) return res.status(400).json({ message: 'Invalid email or password' });
+            if (!user) {
+                return res.status(400).json({ message: 'Invalid email or password' });
+            }
 
             const isPasswordValid = await bcrypt.compare(password, user.password);
-            if (!isPasswordValid) return res.status(400).json({ message: 'Invalid email or password' });
+            if (!isPasswordValid) {
+                return res.status(400).json({ message: 'Invalid email or password' });
+            }
 
-            const token = jwt.sign({ _id: user._id, name: user.name, email: user.email }, 'secretkey', { expiresIn: '1h' });
+            const token = jwt.sign(
+                { _id: user._id, name: user.name, email: user.email },
+                process.env.JWT_SECRET || 'secretkey',
+                { expiresIn: '1h' }
+            );
+
             res.json({ token });
         } catch (error) {
-            res.status(500).json({ message: "Error logging in user", error });
+            console.error('Error logging in user:', error);
+            res.status(500).json({ message: 'Error logging in user', error });
         }
     });
 
+    // User Profile Endpoint
     app.get('/api/users/profile', authenticate, (req, res) => {
         res.json(req.user);
     });
+
 
     app.post('/api/users/reset-password', async (req, res) => {
         try {

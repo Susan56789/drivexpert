@@ -1,10 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-// Mock function to check if user is logged in
-function isLoggedIn() {
-    return !!localStorage.getItem('token'); // Check if token exists in localStorage
-}
-
 const routes = [
     {
         path: '/',
@@ -41,34 +36,41 @@ const routes = [
                 meta: { breadcrumb: 'Cars', title: 'Cars' }
             },
             {
-                path: '/sell-car',
-                component: () => import('./components/user/SellCar.vue'),
-                meta: { breadcrumb: 'Sell Your Car', title: 'Sell Your Car', requiresAuth: true }
-            },
-            {
-                path: '/dashboard',
-                component: () => import('./components/user/UserDashboard.vue'),
-                meta: { breadcrumb: 'Dashboard', title: 'Dashboard', requiresAuth: true }
-            },
-            {
-                path: '/profile',
-                component: () => import('./components/user/UserProfile.vue'),
-                meta: { breadcrumb: 'Profile', title: 'Profile', requiresAuth: true }
-            },
-            {
                 path: '/login',
                 component: () => import('./components/user/UserLogin.vue'),
-                meta: { title: 'Login' }
+                meta: { breadcrumb: 'Login', title: 'Login' }
             },
             {
                 path: '/register',
                 component: () => import('./components/user/UserRegister.vue'),
-                meta: { title: 'Register' }
+                meta: { breadcrumb: 'Register', title: 'Register' }
             },
             {
                 path: '/reset-password',
                 component: () => import('./components/user/PasswordReset.vue'),
-                meta: { title: 'Reset Password' }
+                meta: { breadcrumb: 'Reset Password', title: 'Reset Password' }
+            },
+            {
+                path: '/dashboard',
+                component: () => import('./components/user/UserDashboard.vue'),
+                meta: { breadcrumb: 'Dashboard', title: 'Dashboard' },
+                children: [
+                    {
+                        path: '',
+                        component: () => import('./components/user/UserProfile.vue'),
+                        meta: { breadcrumb: 'Profile', title: 'Profile' }
+                    },
+                    {
+                        path: 'sell-car',
+                        component: () => import('./components/user/SellCar.vue'),
+                        meta: { breadcrumb: 'Sell Your Car', title: 'Sell Your Car' }
+                    },
+                    {
+                        path: 'cars-sold',
+                        component: () => import('./components/user/CarsSold.vue'),
+                        meta: { breadcrumb: 'Cars Sold', title: 'Cars Sold' }
+                    }
+                ]
             }
         ]
     }
@@ -81,13 +83,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title || 'DrivExpert';
-
-    if (to.matched.some(record => record.meta.requiresAuth) && !isLoggedIn()) {
-        // Redirect to login page if not authenticated
-        next({ path: '/login' });
-    } else {
-        next();
-    }
+    next();
 });
 
 export default router;

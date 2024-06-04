@@ -1,42 +1,52 @@
 <template>
-    <div>
-        <h2 class="text-center text-3xl font-extrabold text-gray-900">Dashboard</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-            <div v-for="car in cars" :key="car.id" class="bg-white p-4 rounded-lg shadow-md">
-                <h3 class="text-xl font-bold">{{ car.name }}</h3>
-                <p>{{ car.description }}</p>
+    <div class="flex min-h-screen bg-gray-100">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-md">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-center">Dashboard</h2>
+                <nav class="mt-8">
+                    <ul class="space-y-2">
+                        <li>
+                            <router-link to="/dashboard" class="block py-2 px-4 rounded hover:bg-gray-200"
+                                exact>Profile</router-link>
+                        </li>
+                        <li>
+                            <router-link to="/dashboard/sell-car" class="block py-2 px-4 rounded hover:bg-gray-200">Sell
+                                Car</router-link>
+                        </li>
+                        <li>
+                            <router-link to="/dashboard/cars-sold"
+                                class="block py-2 px-4 rounded hover:bg-gray-200">Cars Sold</router-link>
+                        </li>
+                        <li>
+                            <button @click="logout"
+                                class="block w-full text-left py-2 px-4 rounded hover:bg-gray-200">Logout</button>
+                        </li>
+                    </ul>
+                </nav>
             </div>
+        </aside>
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <router-view></router-view>
         </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
     name: 'UserDashboard',
-    data() {
-        return {
-            cars: []
-        };
-    },
-    async created() {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get('https://drivexpert.onrender.com/api/cars', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            this.cars = response.data;
-        } catch (error) {
-            console.error(error);
+    methods: {
+        logout() {
+            localStorage.removeItem('token');
+            this.$router.push('/login');
         }
     }
 };
 </script>
 
 <style scoped>
-.grid {
-    display: grid;
-    gap: 16px;
+aside {
+    width: 250px;
 }
 </style>

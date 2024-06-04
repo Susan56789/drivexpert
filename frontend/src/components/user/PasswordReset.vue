@@ -4,7 +4,7 @@
             <h2 class="text-center text-3xl font-extrabold text-gray-900">Reset Password</h2>
             <form @submit.prevent="resetPassword">
                 <input v-model="email" type="email" placeholder="Email" class="input" required />
-                <button type="submit" class="w-full btn">Reset Password</button>
+                <button type="submit" class="w-full btn">Send Reset Link</button>
             </form>
         </div>
     </div>
@@ -14,7 +14,7 @@
 import axios from 'axios';
 
 export default {
-    name: 'PasswordReset',
+    name: 'ResetPassword',
     data() {
         return {
             email: ''
@@ -23,12 +23,16 @@ export default {
     methods: {
         async resetPassword() {
             try {
-                await axios.post('https://drivexpert.onrender.com/api/users/reset-password', {
-                    email: this.email
-                });
-                alert('Password reset link sent to your email.');
+                const payload = { email: this.email };
+                console.log('Request payload:', payload);
+
+                const response = await axios.post('https://drivexpert.onrender.com/api/users/reset-password', payload);
+                console.log('Response:', response);
+
+                alert('A reset link has been sent to your email.');
             } catch (error) {
-                console.error(error);
+                console.error('Reset Password error:', error.response ? error.response.data : error.message);
+                alert('Failed to send reset link. Please try again.');
             }
         }
     }

@@ -29,14 +29,20 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await axios.post('https://drivexpert.onrender.com/api/users/login', {
+                const payload = {
                     email: this.email,
                     password: this.password
-                });
+                };
+                console.log('Request payload:', payload);
+
+                const response = await axios.post('https://drivexpert.onrender.com/api/users/login', payload);
+                console.log('Response:', response);
+
                 localStorage.setItem('token', response.data.token);
                 this.$router.push('/dashboard');
             } catch (error) {
-                console.error(error);
+                console.error('Login error:', error.response ? error.response.data : error.message);
+                alert('Failed to log in. Please check your email and password.');
             }
         }
     }

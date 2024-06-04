@@ -77,4 +77,19 @@ module.exports = (client, app, authenticate, ObjectId) => {
             res.status(500).json({ message: 'Error fetching car models', error: err.message });
         }
     });
+
+    app.get('/api/cars/sold', authenticate, async (req, res) => {
+        try {
+            const userId = req.user._id;
+
+
+            const soldCars = await cars.find({ sellerId: userId }).toArray();
+
+            res.json(soldCars);
+        } catch (error) {
+            console.error('Error fetching sold cars:', error);
+            res.status(500).json({ message: 'Error fetching sold cars', error });
+        }
+    });
+
 };
