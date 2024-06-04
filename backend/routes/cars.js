@@ -1,19 +1,22 @@
 module.exports = (client, app, authenticate, ObjectId, jwt) => {
     const database = client.db("driveexpert");
     const cars = database.collection("cars");
+    const multer = require('multer');
+    const upload = multer({ dest: 'uploads/' });
 
-    app.post('/api/cars', authenticate, async (req, res) => {
+    app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
         try {
-            // Verify and decode the token
-            const decodedToken = jwt.verify(process.env.JWT_SECRET || 'secretkey');
+            // Extract user information from the authenticated request
+            const { name, email, phone } = req.user;
 
-            // Extract user information from the decoded token
-            const { name, email, phone } = decodedToken;
+            // Log the request body and files
+            console.log('Request Body:', req.body);
+            console.log('Request Files:', req.files);
 
             // Extract car details from the request body
             const { carName, fuelType, engineSize, mileage, price, year, currentLocation, description } = req.body;
 
-            // Extract uploaded image filenames
+            // Extract uploaded image filenames (assuming req.files is an array of files)
             const images = req.files ? req.files.map(file => file.filename) : [];
 
             // Create a new car object with seller information and timestamps
@@ -72,9 +75,7 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
     // Fetch all car names
     app.get('/api/car-names', async (req, res) => {
         try {
-            const database = client.db("driveexpert");
             const names = database.collection("car_names");
-
             const allNames = await names.find({}).toArray();
             res.status(200).json(allNames);
         } catch (err) {
@@ -85,9 +86,7 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
     // Fetch all car models
     app.get('/api/car-models', async (req, res) => {
         try {
-            const database = client.db("driveexpert");
             const models = database.collection("car_models");
-
             const allModels = await models.find({}).toArray();
             res.status(200).json(allModels);
         } catch (err) {
@@ -97,11 +96,8 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
 
     app.get('/api/cars/sold', authenticate, async (req, res) => {
         try {
-            const userId = req.user._id;
-
-
-            const soldCars = await cars.find({ sellerId: userId }).toArray();
-
+            const userEmail = req.user.email;
+            const soldCars = await cars.find({ "seller.email": userEmail }).toArray();
             res.json(soldCars);
         } catch (error) {
             console.error('Error fetching sold cars:', error);

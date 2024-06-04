@@ -59,7 +59,8 @@
                                         class="text-gray-500 cursor-pointer hover:text-gray-900">Careers</a>
                                 </li>
                                 <li class="mt-3">
-                                    <a href="/login" class="text-gray-500 cursor-pointer hover:text-gray-900">Sell
+                                    <a href="/dashboard/sell-car"
+                                        class="text-gray-500 cursor-pointer hover:text-gray-900">Sell
                                         Your Car</a>
                                 </li>
                             </nav>

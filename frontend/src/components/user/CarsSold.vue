@@ -5,7 +5,7 @@
             <div v-if="cars.length">
                 <ul>
                     <li v-for="car in cars" :key="car._id" class="mb-4">
-                        <h2 class="text-xl font-semibold">{{ car.name }}</h2>
+                        <h2 class="text-xl font-semibold">{{ car.carName }}</h2>
                         <p><strong>Price:</strong> ${{ car.price }}</p>
                         <p><strong>Year:</strong> {{ car.year }}</p>
                     </li>
@@ -47,3 +47,5 @@ export default {
     }
 };
 </script>
+
+<style scoped></style>

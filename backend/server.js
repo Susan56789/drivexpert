@@ -23,6 +23,8 @@ const client = new MongoClient(uri);
 // Use CORS middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 const authenticate = (req, res, next) => {
     try {

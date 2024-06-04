@@ -79,7 +79,7 @@ export default {
                 images: [],
             },
             carFields: [
-                { id: 'name', label: 'Name', model: 'carName', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'carName', label: 'Name', model: 'carName', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
                 { id: 'fuelType', label: 'Fuel Type', model: 'fuelType', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
                 { id: 'engineSize', label: 'Engine Size', model: 'engineSize', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
                 { id: 'mileage', label: 'Mileage', model: 'mileage', type: 'number', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
@@ -122,12 +122,11 @@ export default {
                 formData.append('sellerEmail', this.user.email);
                 formData.append('sellerPhone', this.user.phone);
 
-                this.form.images.forEach((image, index) => {
-                    formData.append(`images[${index}]`, image.file);
+                this.form.images.forEach((image) => {
+                    formData.append(`images`, image.file);
                 });
 
                 const token = localStorage.getItem('token');
-                console.log('Token:', token);
                 if (!token) throw new Error('Authentication token is missing.');
 
                 const response = await axios.post('https://drivexpert.onrender.com/api/cars', formData, {
