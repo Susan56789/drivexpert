@@ -30,7 +30,7 @@ const authenticate = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, 'secretkey');
-        const database = client.db('sample_mflix');
+        const database = client.db('driveexpert');
         const users = database.collection('users');
         const user = await users.findOne({ _id: new ObjectId(decoded._id) });
 
