@@ -50,13 +50,10 @@
                         </div>
                     </div>
 
-                    <h2 class="text-xl font-semibold mb-4">Seller Information</h2>
-                    <!-- Seller Information Fields -->
-                    <div v-for="(field, index) in sellerFields" :key="index" class="mb-4">
-                        <label :for="field.id" class="block text-gray-700 font-semibold mb-2">{{ field.label }}</label>
-                        <input :type="field.type" :id="field.id" v-model="form[field.model]" :class="field.class"
-                            :required="field.required" />
-                    </div>
+                    <!-- Hidden Seller Information Fields -->
+                    <input type="hidden" v-model="form.sellerName" />
+                    <input type="hidden" v-model="form.sellerEmail" />
+                    <input type="hidden" v-model="form.sellerPhone" />
 
                     <!-- Submit Button -->
                     <button
@@ -99,14 +96,27 @@ export default {
                 { id: 'currentLocation', label: 'Current Location', model: 'currentLocation', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
                 { id: 'description', label: 'Description', model: 'description', type: 'textarea', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', rows: 4, required: true },
             ],
-            sellerFields: [
-                { id: 'sellerName', label: 'Seller Name', model: 'sellerName', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
-                { id: 'sellerEmail', label: 'Seller Email', model: 'sellerEmail', type: 'email', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
-                { id: 'sellerPhone', label: 'Seller Phone', model: 'sellerPhone', type: 'tel', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
-            ],
         };
     },
     methods: {
+        async fetchUserProfile() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) throw new Error('Authentication token is missing.');
+
+                const response = await axios.get('https://drivexpert.onrender.com/api/users/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const { name, email, phone } = response.data;
+                this.form.sellerName = name;
+                this.form.sellerEmail = email;
+                this.form.sellerPhone = phone;
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+                alert('An error occurred while fetching the user profile.');
+            }
+        },
         handleFileUpload(event) {
             const files = Array.from(event.target.files);
             files.forEach(file => {
@@ -133,7 +143,6 @@ export default {
                     formData.append(`images[${index}]`, image.file);
                 });
 
-                // Get the token from localStorage
                 const token = localStorage.getItem('token');
                 if (!token) throw new Error('Authentication token is missing.');
 
@@ -173,6 +182,9 @@ export default {
             document.getElementById('images-input').value = '';
         },
     },
+    created() {
+        this.fetchUserProfile();
+    }
 };
 </script>
 

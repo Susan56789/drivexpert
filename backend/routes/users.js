@@ -34,4 +34,38 @@ module.exports = (client, app, authenticate, bcrypt, jwt) => {
     app.get('/api/users/profile', authenticate, (req, res) => {
         res.json(req.user);
     });
+
+    app.post('/api/users/reset-password', async (req, res) => {
+        try {
+            const { email } = req.body;
+            const user = await users.findOne({ email });
+            if (!user) return res.status(400).json({ message: 'User not found' });
+
+            // Generate a password reset token (implement this function according to your requirements)
+            const resetToken = jwt.sign({ _id: user._id, email: user.email }, 'resetsecretkey', { expiresIn: '1h' });
+
+            // Send the reset token via email (implement the sendResetEmail function according to your requirements)
+            await sendResetEmail(user.email, resetToken);
+
+            res.status(200).json({ message: 'Password reset link sent to your email' });
+        } catch (error) {
+            res.status(500).json({ message: "Error sending reset password email", error });
+        }
+    });
+
+    app.post('/api/users/reset-password/:token', async (req, res) => {
+        try {
+            const { token } = req.params;
+            const { newPassword } = req.body;
+            const decoded = jwt.verify(token, 'resetsecretkey');
+
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            await users.updateOne({ _id: decoded._id }, { $set: { password: hashedPassword } });
+
+            res.status(200).json({ message: 'Password reset successfully' });
+        } catch (error) {
+            res.status(500).json({ message: "Error resetting password", error });
+        }
+    });
+
 }
