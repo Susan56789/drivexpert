@@ -4,81 +4,25 @@
             <h1 class="text-3xl font-bold mb-8 text-center">Sell Your Car with Ease</h1>
             <div class="bg-white rounded-lg shadow-md p-8">
                 <p class="mb-6 text-center">
-                    At DrivExpert, we make it easy for you to sell your car. Our dedicated team will guide you
-                    through the entire process, ensuring a smooth and hassle-free experience. Simply fill out the form
-                    below, and our experts will get in touch with you to discuss the next steps. We pride ourselves on
-                    offering fair and competitive prices for your vehicle.
+                    At DrivExpert, we make it easy for you to sell your car. Our dedicated team will guide you through
+                    the entire process, ensuring a smooth and hassle-free experience. Simply fill out the form below,
+                    and our experts will get in touch with you to discuss the next steps. We pride ourselves on offering
+                    fair and competitive prices for your vehicle.
                 </p>
                 <form @submit.prevent="submitForm" class="space-y-6">
                     <h2 class="text-xl font-semibold mb-4">Car Information</h2>
-                    <!-- Name Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="name">Name</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="name" v-model="form.carName" required />
-                    </div>
-
-                    <!-- Fuel Type Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="fuelType">Fuel Type</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="fuelType" v-model="form.fuelType" required />
-                    </div>
-
-                    <!-- Engine Size Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="engineSize">Engine Size</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="engineSize" v-model="form.engineSize" required />
-                    </div>
-
-                    <!-- Mileage Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="mileage">Mileage</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="mileage" v-model.number="form.mileage" type="number" required />
-                    </div>
-
-                    <!-- Price Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="price">Price</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="price" v-model.number="form.price" type="number" required />
-                    </div>
-
-                    <!-- Year Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="year">Year</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="year" v-model.number="form.year" type="number" required />
-                    </div>
-
-                    <!-- Current Location Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="currentLocation">Current
-                            Location</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="currentLocation" v-model="form.currentLocation" required />
-                    </div>
-
-                    <!-- Description Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="description">Description</label>
-                        <textarea
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="description" v-model="form.description" rows="4" required></textarea>
+                    <!-- Car Information Fields -->
+                    <div v-for="(field, index) in carFields" :key="index" class="mb-4">
+                        <label :for="field.id" class="block text-gray-700 font-semibold mb-2">{{ field.label }}</label>
+                        <input v-if="field.type !== 'textarea'" :type="field.type" :id="field.id"
+                            v-model="form[field.model]" :class="field.class" :required="field.required" />
+                        <textarea v-else :id="field.id" v-model="form[field.model]" :class="field.class"
+                            :rows="field.rows" :required="field.required"></textarea>
                     </div>
 
                     <!-- Image Upload Field -->
                     <div>
-                        <label class="block text-gray-700 font-semibold mb-2" for="images">Upload Images</label>
+                        <label for="images-input" class="block text-gray-700 font-semibold mb-2">Upload Images</label>
                         <div class="flex items-center justify-center w-full">
                             <label for="images-input"
                                 class="flex flex-col w-full h-32 border-4 border-dashed border-gray-400 hover:bg-gray-100 rounded-lg cursor-pointer transition-all duration-300">
@@ -89,7 +33,7 @@
                                     </p>
                                 </div>
                                 <input id="images-input" type="file" multiple class="hidden"
-                                    @change="handleFileUpload" />
+                                    accept="image/png, image/jpeg, image/webp" @change="handleFileUpload" />
                             </label>
                         </div>
                     </div>
@@ -107,29 +51,11 @@
                     </div>
 
                     <h2 class="text-xl font-semibold mb-4">Seller Information</h2>
-
-                    <!-- Seller Name Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="sellerName">Seller Name</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="sellerName" v-model="form.sellerName" required />
-                    </div>
-
-                    <!-- Seller Email Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="sellerEmail">Seller Email</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="sellerEmail" v-model="form.sellerEmail" type="email" required />
-                    </div>
-
-                    <!-- Seller Phone Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-semibold mb-2" for="sellerPhone">Seller Phone</label>
-                        <input
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            id="sellerPhone" v-model="form.sellerPhone" type="tel" required />
+                    <!-- Seller Information Fields -->
+                    <div v-for="(field, index) in sellerFields" :key="index" class="mb-4">
+                        <label :for="field.id" class="block text-gray-700 font-semibold mb-2">{{ field.label }}</label>
+                        <input :type="field.type" :id="field.id" v-model="form[field.model]" :class="field.class"
+                            :required="field.required" />
                     </div>
 
                     <!-- Submit Button -->
@@ -141,6 +67,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
 
@@ -162,6 +89,21 @@ export default {
                 sellerEmail: '',
                 sellerPhone: ''
             },
+            carFields: [
+                { id: 'name', label: 'Name', model: 'carName', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'fuelType', label: 'Fuel Type', model: 'fuelType', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'engineSize', label: 'Engine Size', model: 'engineSize', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'mileage', label: 'Mileage', model: 'mileage', type: 'number', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'price', label: 'Price', model: 'price', type: 'number', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'year', label: 'Year', model: 'year', type: 'number', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'currentLocation', label: 'Current Location', model: 'currentLocation', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'description', label: 'Description', model: 'description', type: 'textarea', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', rows: 4, required: true },
+            ],
+            sellerFields: [
+                { id: 'sellerName', label: 'Seller Name', model: 'sellerName', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'sellerEmail', label: 'Seller Email', model: 'sellerEmail', type: 'email', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'sellerPhone', label: 'Seller Phone', model: 'sellerPhone', type: 'tel', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+            ],
         };
     },
     methods: {
@@ -181,26 +123,24 @@ export default {
         async submitForm() {
             try {
                 const formData = new FormData();
-                formData.append('name', this.form.carName);
-                formData.append('fuelType', this.form.fuelType);
-                formData.append('engineSize', this.form.engineSize);
-                formData.append('mileage', this.form.mileage);
-                formData.append('price', this.form.price);
-                formData.append('year', this.form.year);
-                formData.append('currentLocation', this.form.currentLocation);
-                formData.append('description', this.form.description);
-                formData.append('sellerName', this.form.sellerName);
-                formData.append('sellerEmail', this.form.sellerEmail);
-                formData.append('sellerPhone', this.form.sellerPhone);
+                Object.keys(this.form).forEach(key => {
+                    if (key !== 'images') {
+                        formData.append(key, this.form[key]);
+                    }
+                });
 
                 this.form.images.forEach((image, index) => {
                     formData.append(`images[${index}]`, image.file);
                 });
 
+                // Get the token from localStorage
+                const token = localStorage.getItem('token');
+                if (!token) throw new Error('Authentication token is missing.');
+
                 const response = await axios.post('https://drivexpert.onrender.com/api/cars', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${token}`
                     }
                 });
 
@@ -235,4 +175,5 @@ export default {
     },
 };
 </script>
+
 <style scoped></style>

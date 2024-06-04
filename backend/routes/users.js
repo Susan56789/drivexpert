@@ -1,42 +1,37 @@
 
-module.exports = (client, app, authenticate) => {
-    // Route to post seller information
-    app.post("/api/users", authenticate, async (req, res) => {
+module.exports = (client, app, authenticate, bcrypt, jwt) => {
+    const database = client.db("driveexpert");
+    const users = database.collection("users");
+
+    app.post('/api/users/register', async (req, res) => {
         try {
-            const database = client.db("driveexpert");
-            const users = database.collection("users");
-
-            // Extract user data from the request body
-            const { name, email, phone } = req.body;
-
-            // Validate required fields
-            if (!name || !email || !phone) {
-                return res.status(400).json({ message: 'Missing required fields' });
-            }
-
-            // Check if the email is already registered
-            const existingUser = await users.findOne({ email });
-            if (existingUser) {
-                return res.status(409).json({ message: 'Email already registered' });
-            }
-
-            // Create a new user object
-            const newSeller = {
-                name,
-                email,
-                phone,
-                createdAt: new Date()
-            };
-
-            // Insert the new user into the database
-            const result = await users.insertOne(newSeller);
-
-            // Send a success response with the inserted user data
-            res.status(201).json({ _id: result.insertedId, ...newSeller });
-        } catch (err) {
-            // Send an error response if something goes wrong
-            res.status(500).json({ message: 'Error posting seller information', error: err.message });
+            const { name, email, password, phone } = req.body;
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const newUser = { name, email, password: hashedPassword, phone };
+            const result = await users.insertOne(newUser);
+            res.status(201).json(result);
+        } catch (error) {
+            res.status(500).json({ message: "Error registering user", error });
         }
     });
 
+    app.post('/api/users/login', async (req, res) => {
+        try {
+            const { email, password } = req.body;
+            const user = await users.findOne({ email });
+            if (!user) return res.status(400).json({ message: 'Invalid email or password' });
+
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            if (!isPasswordValid) return res.status(400).json({ message: 'Invalid email or password' });
+
+            const token = jwt.sign({ _id: user._id, name: user.name, email: user.email }, 'secretkey', { expiresIn: '1h' });
+            res.json({ token });
+        } catch (error) {
+            res.status(500).json({ message: "Error logging in user", error });
+        }
+    });
+
+    app.get('/api/users/profile', authenticate, (req, res) => {
+        res.json(req.user);
+    });
 }
