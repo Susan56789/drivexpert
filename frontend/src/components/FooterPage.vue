@@ -59,7 +59,7 @@
                                         class="text-gray-500 cursor-pointer hover:text-gray-900">Careers</a>
                                 </li>
                                 <li class="mt-3">
-                                    <a href="/dashboard/sell-car"
+                                    <a href="/login"
                                         class="text-gray-500 cursor-pointer hover:text-gray-900">Sell
                                         Your Car</a>
                                 </li>

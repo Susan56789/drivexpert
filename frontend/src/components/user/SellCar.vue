@@ -11,7 +11,6 @@
                 </p>
                 <form @submit.prevent="submitForm" class="space-y-6">
                     <h2 class="text-xl font-semibold mb-4">Car Information</h2>
-                    <!-- Car Information Fields -->
                     <div v-for="(field, index) in carFields" :key="index" class="mb-4">
                         <label :for="field.id" class="block text-gray-700 font-semibold mb-2">{{ field.label }}</label>
                         <input v-if="field.type !== 'textarea'" :type="field.type" :id="field.id"
@@ -20,7 +19,6 @@
                             :rows="field.rows" :required="field.required"></textarea>
                     </div>
 
-                    <!-- Image Upload Field -->
                     <div>
                         <label for="images-input" class="block text-gray-700 font-semibold mb-2">Upload Images</label>
                         <div class="flex items-center justify-center w-full">
@@ -38,7 +36,6 @@
                         </div>
                     </div>
 
-                    <!-- Image Preview -->
                     <div v-if="form.images.length" class="mt-4">
                         <h3 class="text-lg font-semibold mb-2">Image Preview:</h3>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -50,7 +47,6 @@
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
                     <button
                         class="w-full bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-all duration-300"
                         type="submit">Submit</button>

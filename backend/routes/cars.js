@@ -21,46 +21,46 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
     app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
-    try {
-        const { name, email, phone } = req.user;
-
-        console.log('Request Body:', req.body);
-        console.log('Request Files:', req.files);
-
-        const { carName, fuelType, engineSize, mileage, price, year, currentLocation, description } = req.body;
-
-        // Store filenames along with their extensions
-        const images = req.files ? req.files.map(file => ({
-            filename: file.filename,
-            mimetype: file.mimetype
-        })) : [];
-
-        const newCar = {
-            carName,
-            fuelType,
-            engineSize,
-            mileage,
-            price,
-            year,
-            currentLocation,
-            description,
-            images,
-            seller: {
-                name,
-                email,
-                phone
-            },
-            createdAt: new Date()
-        };
-
-        const result = await cars.insertOne(newCar);
-        res.status(201).json(result);
-    } catch (error) {
-        console.error('Error posting car:', error);
-        res.status(500).json({ message: "Error posting car", error: error.message });
-    }
-});
-
+        try {
+            const { name, email, phone } = req.user;
+    
+            console.log('Request Body:', req.body);
+            console.log('Request Files:', req.files);
+    
+            const { carName, fuelType, engineSize, mileage, price, year, currentLocation, description } = req.body;
+    
+            // Store filenames along with their extensions
+            const images = req.files ? req.files.map(file => ({
+                filename: file.filename,
+                extension: file.mimetype.split('/')[1] // Extract the extension from mimetype
+            })) : [];
+    
+            const newCar = {
+                carName,
+                fuelType,
+                engineSize,
+                mileage,
+                price,
+                year,
+                currentLocation,
+                description,
+                images,
+                seller: {
+                    name,
+                    email,
+                    phone
+                },
+                createdAt: new Date()
+            };
+    
+            const result = await cars.insertOne(newCar);
+            res.status(201).json(result);
+        } catch (error) {
+            console.error('Error posting car:', error);
+            res.status(500).json({ message: "Error posting car", error: error.message });
+        }
+    });
+    
     app.get('/api/cars', async (req, res) => {
         try {
             const carsList = await cars.find().toArray();
