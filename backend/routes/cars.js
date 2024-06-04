@@ -15,10 +15,16 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
     const express = require('express');
     const path = require('path');
 
-
-
-    // Set up static file serving
-    app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// // Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+    setHeaders: (res, path) => {
+        const mime = require('mime-types');
+        const type = mime.lookup(path);
+        if (type) {
+            res.setHeader('Content-Type', type);
+        }
+    }
+}));
 
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
         try {
