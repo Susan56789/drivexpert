@@ -1,11 +1,22 @@
-module.exports = (client, app, authenticate, ObjectId) => {
+module.exports = (client, app, authenticate, ObjectId, jwt) => {
     const database = client.db("driveexpert");
     const cars = database.collection("cars");
 
     app.post('/api/cars', authenticate, async (req, res) => {
         try {
+            // Verify and decode the token
+            const decodedToken = jwt.verify(req.token, process.env.JWT_SECRET);
+
+            // Extract user information from the decoded token
+            const { name, email, phone } = decodedToken;
+
+            // Extract car details from the request body
             const { carName, fuelType, engineSize, mileage, price, year, currentLocation, description } = req.body;
+
+            // Extract uploaded image filenames
             const images = req.files ? req.files.map(file => file.filename) : [];
+
+            // Create a new car object with seller information and timestamps
             const newCar = {
                 carName,
                 fuelType,
@@ -17,16 +28,22 @@ module.exports = (client, app, authenticate, ObjectId) => {
                 description,
                 images,
                 seller: {
-                    name: req.user.name,
-                    email: req.user.email,
-                    phone: req.user.phone
+                    name,
+                    email,
+                    phone
                 },
                 createdAt: new Date()
             };
+
+            // Insert the new car into the database
             const result = await cars.insertOne(newCar);
+
+            // Send a 201 Created response with the result
             res.status(201).json(result);
         } catch (error) {
-            res.status(500).json({ message: "Error posting car", error });
+            // Handle errors and send a 500 Internal Server Error response
+            console.error('Error posting car:', error);
+            res.status(500).json({ message: "Error posting car", error: error.message });
         }
     });
 

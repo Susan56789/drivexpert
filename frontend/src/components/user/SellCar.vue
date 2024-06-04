@@ -50,11 +50,6 @@
                         </div>
                     </div>
 
-                    <!-- Hidden Seller Information Fields -->
-                    <input type="hidden" v-model="form.sellerName" />
-                    <input type="hidden" v-model="form.sellerEmail" />
-                    <input type="hidden" v-model="form.sellerPhone" />
-
                     <!-- Submit Button -->
                     <button
                         class="w-full bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-all duration-300"
@@ -82,9 +77,6 @@ export default {
                 currentLocation: '',
                 description: '',
                 images: [],
-                sellerName: '',
-                sellerEmail: '',
-                sellerPhone: ''
             },
             carFields: [
                 { id: 'name', label: 'Name', model: 'carName', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
@@ -96,27 +88,14 @@ export default {
                 { id: 'currentLocation', label: 'Current Location', model: 'currentLocation', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
                 { id: 'description', label: 'Description', model: 'description', type: 'textarea', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', rows: 4, required: true },
             ],
+            user: {
+                name: '',
+                email: '',
+                phone: ''
+            }
         };
     },
     methods: {
-        async fetchUserProfile() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) throw new Error('Authentication token is missing.');
-
-                const response = await axios.get('https://drivexpert.onrender.com/api/users/profile', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                const { name, email, phone } = response.data;
-                this.form.sellerName = name;
-                this.form.sellerEmail = email;
-                this.form.sellerPhone = phone;
-            } catch (error) {
-                console.error('Error fetching user profile:', error);
-                alert('An error occurred while fetching the user profile.');
-            }
-        },
         handleFileUpload(event) {
             const files = Array.from(event.target.files);
             files.forEach(file => {
@@ -139,11 +118,16 @@ export default {
                     }
                 });
 
+                formData.append('sellerName', this.user.name);
+                formData.append('sellerEmail', this.user.email);
+                formData.append('sellerPhone', this.user.phone);
+
                 this.form.images.forEach((image, index) => {
                     formData.append(`images[${index}]`, image.file);
                 });
 
                 const token = localStorage.getItem('token');
+                console.log('Token:', token);
                 if (!token) throw new Error('Authentication token is missing.');
 
                 const response = await axios.post('https://drivexpert.onrender.com/api/cars', formData, {
@@ -175,15 +159,23 @@ export default {
                 currentLocation: '',
                 description: '',
                 images: [],
-                sellerName: '',
-                sellerEmail: '',
-                sellerPhone: ''
             };
             document.getElementById('images-input').value = '';
         },
     },
     created() {
-        this.fetchUserProfile();
+        const token = localStorage.getItem('token');
+        if (token) {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+
+            this.user = {
+                name: payload.name,
+                email: payload.email,
+                phone: payload.phone || 'N/A'
+            };
+        } else {
+            this.$router.push('/login');
+        }
     }
 };
 </script>

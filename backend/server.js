@@ -78,7 +78,7 @@ app.get("/", (req, res) => {
 
 
 //ROUTES
-require('./routes/cars')(client, app, authenticate, ObjectId);
+require('./routes/cars')(client, app, authenticate, ObjectId, jwt);
 require('./routes/users')(client, app, authenticate, bcrypt, jwt);
 
 
