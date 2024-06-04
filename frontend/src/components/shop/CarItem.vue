@@ -1,18 +1,28 @@
 <template>
-    <div class="car-item bg-white rounded-lg shadow-md p-4">
+    <div class="container mx-auto px-4 py-8">
         <router-link :to="`/cars/${car._id}`">
-            <img :src="'https://drivexpert.onrender.com/uploads/' + car.images[0].jpg" :alt="car.carName"
-                class="w-full h-48 object-cover rounded-md" />
-            <h2 class="text-xl font-semibold mt-2">{{ car.carName }}</h2>
+
+            <div class="mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white 
+                 shadow-md duration-300 hover:scale-105 hover:shadow-lg">
+                <img class="h-48 w-full object-cover object-center"
+                    :src="'https://drivexpert.onrender.com/uploads/' + car.images[0].jpg" :alt="car.carName" />
+                <div class="p-4">
+                    <h2 class="mb-2 text-lg font-medium text-gray-900">{{ car.carName }}</h2>
+                    <p class="mb-2 text-base  text-gray-700">Product description goes here.</p>
+
+                    <p class="mr-2 text-lg font-semibold text-gray-900 ">${{ car.price }}</p><br />
+                    <p class="text-base  font-medium text-gray-500  ">{{ car.year }}
+                    </p>
+
+
+                </div>
+            </div>
+
         </router-link>
-        <p><strong>Price:</strong> ${{ car.price }}</p>
-        <p><strong>Year:</strong> {{ car.year }}</p>
-        <p><strong>Fuel Type:</strong> {{ car.fuelType }}</p>
-        <p><strong>Engine Size:</strong> {{ car.engineSize }}</p>
-        <p><strong>Mileage:</strong> {{ car.mileage }}</p>
-        <p><strong>Location:</strong> {{ car.currentLocation }}</p>
-        <p class="mt-2">{{ car.description }}</p>
+
     </div>
+
+
 </template>
 <script>
 export default {
@@ -25,12 +35,4 @@ export default {
     }
 };
 </script>
-<style scoped>
-.car-item {
-    transition: transform 0.3s;
-}
-
-.car-item:hover {
-    transform: scale(1.05);
-}
-</style>
+<style scoped></style>
