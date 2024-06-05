@@ -22,7 +22,7 @@
                                     Available
                                 </p>
                             </div>
-                            <div class="">
+                            <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500"
                                     viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd"
@@ -71,9 +71,18 @@ export default {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            this.cars = response.data;
 
-            console.log('cars sold:', response.data);
+            this.cars = response.data.map(car => {
+                if (car.images && car.images.length) {
+                    car.images = car.images.map(image => ({
+                        filename: image.filename,
+                        url: `https://drivexpert.onrender.com/uploads/${image.filename}`
+                    }));
+                }
+                return car;
+            });
+
+            console.log('cars sold:', this.cars);
         } catch (error) {
             console.error('Error fetching sold cars:', error.response ? error.response.data : error.message);
         }

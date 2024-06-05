@@ -2,9 +2,8 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
     const database = client.db("driveexpert");
     const cars = database.collection("cars");
     const multer = require('multer');
-    const express = require('express');
+
     const path = require('path');
-    const mime = require('mime-types');
 
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
@@ -27,14 +26,7 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
         }
     });
 
-    app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
-        setHeaders: (res, filePath) => {
-            const type = mime.lookup(filePath);
-            if (type) {
-                res.setHeader('Content-Type', type);
-            }
-        }
-    }));
+
 
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
         try {

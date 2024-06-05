@@ -2,6 +2,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const express = require('express');
+const mime = require('mime-types');
+const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
@@ -24,6 +26,15 @@ const client = new MongoClient(uri);
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+    setHeaders: (res, filePath) => {
+        const type = mime.lookup(filePath);
+        if (type) {
+            res.setHeader('Content-Type', type);
+        }
+    }
+}));
 
 
 const authenticate = (req, res, next) => {
