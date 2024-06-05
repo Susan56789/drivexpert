@@ -21,8 +21,9 @@ const client = new MongoClient(uri);
 
 // Middleware setup
 app.use(cors({
-    origin: '*',
-    optionsSuccessStatus: 200
+    origin: '*', // Allow all origins
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization'
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

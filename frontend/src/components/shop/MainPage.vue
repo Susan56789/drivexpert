@@ -1,23 +1,23 @@
 <template>
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-4">Shop</h1>
-        <div class="flex items-center justify-between mb-4">
-            <div>
-                <label for="price">Price Range:</label>
-                <input type="number" v-model.number="minPrice" placeholder="Min" class="mr-2">
-                <input type="number" v-model.number="maxPrice" placeholder="Max" class="mr-2">
-                <button @click="filterCars" class="px-4 py-2 bg-blue-500 text-white">Apply</button>
+        <div class="flex items-center justify-between mb-4 flex-wrap">
+            <div class="mb-2 md:mb-0">
+                <label for="minPrice" class="mr-2">Price Range:</label>
+                <input type="number" v-model.number="minPrice" placeholder="Min" class="mr-2 border p-1">
+                <input type="number" v-model.number="maxPrice" placeholder="Max" class="mr-2 border p-1">
+                <button @click="filterCars" class="px-4 py-2 bg-blue-500 text-white rounded">Apply</button>
             </div>
-            <div>
-                <label for="year">Year:</label>
-                <input type="number" v-model.number="minYear" placeholder="Min Year" class="mr-2">
-                <input type="number" v-model.number="maxYear" placeholder="Max Year" class="mr-2">
-                <button @click="filterCars" class="px-4 py-2 bg-blue-500 text-white">Apply</button>
+            <div class="mb-2 md:mb-0">
+                <label for="minYear" class="mr-2">Year:</label>
+                <input type="number" v-model.number="minYear" placeholder="Min Year" class="mr-2 border p-1">
+                <input type="number" v-model.number="maxYear" placeholder="Max Year" class="mr-2 border p-1">
+                <button @click="filterCars" class="px-4 py-2 bg-blue-500 text-white rounded">Apply</button>
             </div>
-            <div>
-                <label for="keyword">Keyword:</label>
-                <input type="text" v-model="keyword" placeholder="Search by keyword" class="mr-2">
-                <button @click="filterCars" class="px-4 py-2 bg-blue-500 text-white">Apply</button>
+            <div class="mb-2 md:mb-0">
+                <label for="keyword" class="mr-2">Keyword:</label>
+                <input type="text" v-model="keyword" placeholder="Search by keyword" class="mr-2 border p-1">
+                <button @click="filterCars" class="px-4 py-2 bg-blue-500 text-white rounded">Apply</button>
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -26,6 +26,7 @@
         <Pagination :total="totalPages" @page-change="changePage" />
     </div>
 </template>
+
 <script>
 import CarItem from './CarItem.vue';
 import Pagination from './Pagination.vue';
@@ -46,7 +47,7 @@ export default {
             keyword: '',
             currentPage: 1,
             itemsPerPage: 12
-        }
+        };
     },
     computed: {
         filteredCars() {
@@ -106,5 +107,9 @@ export default {
     mounted() {
         this.fetchCarData();
     }
-}
+};
 </script>
+
+<style scoped>
+/* Add any scoped styles for your component here */
+</style>
