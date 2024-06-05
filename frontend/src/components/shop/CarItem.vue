@@ -6,8 +6,8 @@
                 class="h-48 w-full object-cover object-center" :src=car.images[0].url :alt="car.carName" />
             <div class="p-4">
                 <h2 class="mb-2 text-lg font-medium text-gray-900">{{ car.carName }}</h2>
-                <p class="mb-2 text-base text-gray-700">{{ car.description }}</p>
-                <p class="mr-2 text-lg font-semibold text-gray-900">${{ car.price }}</p><br />
+                <!-- <p class="mb-2 text-base text-gray-700">{{ car.description }}</p> -->
+                <p class="mr-2 text-lg font-semibold text-gray-900">{{ formatCurrency(car.price) }}</p><br />
                 <p class="text-base font-medium text-gray-500">{{ car.year }}</p>
             </div>
         </div>
@@ -22,6 +22,12 @@ export default {
             type: Object,
             required: true
         }
+    },
+    methods: {
+        formatCurrency(value) {
+            const numericValue = parseFloat(value);
+            return isNaN(numericValue) ? '-' : numericValue.toLocaleString('en-KE', { style: 'currency', currency: 'KES' });
+        },
     }
 };
 </script>

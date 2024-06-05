@@ -34,7 +34,7 @@
                                 class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 hidden md:block">
                                 {{ car.year }}</div>
                         </div>
-                        <p class="text-xl font-black text-gray-800">${{ car.price }}</p>
+                        <p class="text-xl font-black text-gray-800">{{ formatCurrency(car.price) }}</p>
                     </div>
                 </div>
             </div>
@@ -84,6 +84,12 @@ export default {
                 console.error('Error fetching sold cars:', error.response ? error.response.data : error.message);
             }
         }
+    },
+    methods: {
+        formatCurrency(value) {
+            const numericValue = parseFloat(value);
+            return isNaN(numericValue) ? '-' : numericValue.toLocaleString('en-KE', { style: 'currency', currency: 'KES' });
+        },
     }
 };
 </script>

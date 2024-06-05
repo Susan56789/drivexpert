@@ -6,7 +6,7 @@
                 <img crossorigin="anonymous" :src=car.images[0].url :alt="car.carName"
                     class="w-full h-48 object-cover rounded-md" />
             </div>
-            <p><strong>Price:</strong> ${{ car.price }}</p>
+            <p><strong>Price:</strong> {{ formatCurrency(car.price) }}</p>
             <p><strong>Year:</strong> {{ car.year }}</p>
             <p><strong>Fuel Type:</strong> {{ car.fuelType }}</p>
             <p><strong>Engine Size:</strong> {{ car.engineSize }}</p>
@@ -51,7 +51,11 @@ export default {
         },
         getImageUrl(filename) {
             return `https://drivexpert.onrender.com/uploads/${filename}`;
-        }
+        },
+        formatCurrency(value) {
+            const numericValue = parseFloat(value);
+            return isNaN(numericValue) ? '-' : numericValue.toLocaleString('en-KE', { style: 'currency', currency: 'KES' });
+        },
     }
 };
 </script>
