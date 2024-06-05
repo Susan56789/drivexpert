@@ -85,6 +85,31 @@ module.exports = (client, app, authenticate, ObjectId, jwt) => {
         }
     });
 
+    // New endpoint for fetching sold cars by authenticated user
+    app.get('/api/cars/sold', authenticate, async (req, res) => {
+        try {
+            const { email } = req.user;  // Get user's email from the authentication middleware
+
+            // Find cars sold by this user
+            const soldCars = await cars.find({ 'seller.email': email }).toArray();
+
+            // Attach image URLs to the response
+            soldCars.forEach(car => {
+                if (car.images && car.images.length) {
+                    car.images = car.images.map(image => ({
+                        filename: image.filename,
+                        url: `https://drivexpert.onrender.com/uploads/${image.filename}`
+                    }));
+                }
+            });
+
+            res.status(200).json(soldCars);
+        } catch (error) {
+            console.error('Error fetching sold cars:', error);
+            res.status(500).json({ message: "Error fetching sold cars", error: error.message });
+        }
+    });
+
     app.get('/api/cars/:id', async (req, res) => {
         try {
             const carId = req.params.id;
