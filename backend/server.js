@@ -20,7 +20,10 @@ const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
 // Middleware setup
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    optionsSuccessStatus: 200
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());

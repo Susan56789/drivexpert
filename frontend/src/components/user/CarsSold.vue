@@ -1,7 +1,8 @@
 <template>
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-8">Cars Sold</h1>
-        <div v-if="cars.length">
+        <div v-if="error" class="text-red-500 mb-4">{{ error }}</div>
+        <div v-if="cars && cars.length">
             <div v-for="car in cars" :key="car._id" class="flex flex-col justify-center mb-6">
                 <div class="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 
                     rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white bg-white">
@@ -54,8 +55,8 @@ export default {
     name: 'CarsSold',
     data() {
         return {
-            cars: [],
-            error: null
+            cars: [], // Initialize as an empty array
+            error: null // Error message state
         };
     },
     async created() {

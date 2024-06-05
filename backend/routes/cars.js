@@ -19,38 +19,44 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
 
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
         try {
-            const { error } = carSchema.validate(req.body);
-            if (error) return res.status(400).json({ message: "Invalid data", error: error.details[0].message });
-
+            // Extract user information from authentication middleware
             const { name, email, phone } = req.user;
-            const { carName, fuelType, engineSize, mileage, price, year, currentLocation, description } = req.body;
 
+            // Extract and validate car data
+            const { carName, fuelType, engineSize, mileage, price, year, currentLocation, description } = req.body;
+            const carData = { carName, fuelType, engineSize, mileage, price, year, currentLocation, description };
+
+            // Validate car data using Joi schema
+            const { error } = carSchema.validate(carData);
+            if (error) {
+                return res.status(400).json({ message: "Invalid data", error: error.details[0].message });
+            }
+
+            // Process images if provided
             const images = req.files ? req.files.map(file => ({
                 filename: file.filename,
                 extension: file.mimetype.split('/')[1]
             })) : [];
 
+            // Create new car object
             const newCar = {
-                carName,
-                fuelType,
-                engineSize,
-                mileage,
-                price,
-                year,
-                currentLocation,
-                description,
+                ...carData,
                 images,
                 seller: { name, email, phone },
                 createdAt: new Date()
             };
 
+            // Insert the new car into the database
             const result = await cars.insertOne(newCar);
+
+            // Respond with the created car data
             res.status(201).json(result);
         } catch (error) {
             console.error('Error posting car:', error);
             res.status(500).json({ message: "Error posting car", error: error.message });
         }
     });
+
 
     app.get('/api/cars', async (req, res) => {
         try {

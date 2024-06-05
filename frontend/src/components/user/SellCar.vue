@@ -51,6 +51,7 @@
                         class="w-full bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-all duration-300"
                         type="submit">Submit</button>
                 </form>
+                <p v-if="errorMessage" class="text-red-500 mt-4">{{ errorMessage }}</p>
             </div>
         </div>
     </div>
@@ -88,7 +89,8 @@ export default {
                 name: '',
                 email: '',
                 phone: ''
-            }
+            },
+            errorMessage: ''
         };
     },
     methods: {
@@ -114,12 +116,8 @@ export default {
                     }
                 });
 
-                formData.append('sellerName', this.user.name);
-                formData.append('sellerEmail', this.user.email);
-                formData.append('sellerPhone', this.user.phone);
-
                 this.form.images.forEach((image) => {
-                    formData.append(`images`, image.file);
+                    formData.append('images', image.file);
                 });
 
                 const token = localStorage.getItem('token');
@@ -156,8 +154,9 @@ export default {
                 images: [],
             };
             document.getElementById('images-input').value = '';
-        },
-    },
+        }
+    }
+    ,
     created() {
         const token = localStorage.getItem('token');
         if (token) {
