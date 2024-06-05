@@ -1,12 +1,14 @@
 <template>
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <CarItem v-for="car in displayedCars" :key="car._id" :car="car" />
-    </div>
-    <div class="mt-4 flex justify-center">
-        <button @click="prevPage" :disabled="currentPage === 1" class="mr-2 px-4 py-2 bg-gray-200"
-            v-if="totalPages > 1">Previous</button>
-        <button @click="nextPage" :disabled="currentPage * pageSize >= cars.length" class="px-4 py-2 bg-gray-200"
-            v-if="totalPages > 1">Next</button>
+    <div>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <CarItem v-for="car in displayedCars" :key="car._id" :car="car" />
+        </div>
+        <div class="mt-4 flex justify-center">
+            <button @click="prevPage" :disabled="currentPage === 1"
+                class="mr-2 px-4 py-2 bg-gray-200 disabled:bg-gray-400" v-if="totalPages > 1">Previous</button>
+            <button @click="nextPage" :disabled="currentPage * pageSize >= cars.length"
+                class="px-4 py-2 bg-gray-200 disabled:bg-gray-400" v-if="totalPages > 1">Next</button>
+        </div>
     </div>
 </template>
 
@@ -64,4 +66,8 @@ export default {
 
 <style scoped>
 /* Add any scoped styles for your component here */
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
 </style>
