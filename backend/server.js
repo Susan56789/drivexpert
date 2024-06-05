@@ -1,6 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
+require('dotenv').config();
 const express = require('express');
 const mime = require('mime-types');
 const path = require('path');
@@ -10,24 +8,22 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { MongoClient } = require("mongodb");
 const multer = require('multer');
+const helmet = require('helmet');
 
-
-
+// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
-
 const ObjectId = require("mongodb").ObjectId;
 
-// Connection URI
+// MongoDB URI
 const uri = process.env.MONGODB_URI;
-
-// Create a new MongoClient
 const client = new MongoClient(uri);
 
-// Use CORS middleware
+// Middleware setup
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helmet());
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
     setHeaders: (res, filePath) => {
@@ -38,51 +34,27 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
     }
 }));
 
-
+// Authentication Middleware
 const authenticate = (req, res, next) => {
     try {
-        // Get the token from the Authorization header
         const authHeader = req.headers.authorization;
         const token = authHeader && authHeader.split(' ')[1];
+        if (!token) return res.status(401).json({ message: 'No token provided' });
 
-        // If no token is provided, return an error
-        if (!token) {
-            console.error('No token provided');
-            return res.status(401).json({ message: 'No token provided' });
-        }
-
-        // Verify the token
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-            if (err) {
-                console.error('Failed to verify token:', err);
-                return res.status(400).json({ message: 'Invalid token' });
-            }
-
-            // If token is valid, set the decoded payload on the request object
+            if (err) return res.status(400).json({ message: 'Invalid token' });
             req.user = decoded;
             next();
         });
     } catch (error) {
-        console.error('Error in authenticate middleware:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
-const createTextIndex = async (collection) => {
-    const indexes = await collection.indexes();
-    const hasTextIndex = indexes.some(index => index.key && index.key._fts === "text");
-
-    if (!hasTextIndex) {
-        await collection.createIndex({ title: "text", description: "text" });
-        console.log("Text index created on 'title' and 'description' fields.");
-    } else {
-        console.log("Text index already exists on 'title' and 'description' fields.");
-    }
-};
-
+// File upload setup
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, '/uploads');
+        cb(null, 'uploads');
     },
     filename: (req, file, cb) => {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
@@ -101,6 +73,7 @@ const upload = multer({
     }
 });
 
+// Database connection and initialization
 async function run() {
     try {
         await client.connect();
@@ -110,26 +83,44 @@ async function run() {
         const cars = database.collection("cars");
         const users = database.collection("users");
         console.log("Collections initialized");
+
+        // Ensure text index on 'cars' collection
+        await createTextIndex(cars);
+
     } catch (err) {
         console.error("Error connecting to the database:", err);
     }
 }
 
-run().catch(console.dir);
+const createTextIndex = async (collection) => {
+    const indexes = await collection.indexes();
+    const hasTextIndex = indexes.some(index => index.key && index.key._fts === "text");
+
+    if (!hasTextIndex) {
+        await collection.createIndex({ title: "text", description: "text" });
+        console.log("Text index created on 'title' and 'description' fields.");
+    } else {
+        console.log("Text index already exists on 'title' and 'description' fields.");
+    }
+};
 
 // Default landing page
 app.get("/", (req, res) => {
     res.send("Welcome to DrivExpert Backend!");
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send({ message: 'Something went wrong!' });
+});
 
-//ROUTES
+// Import and initialize routes
 require('./routes/cars')(client, app, authenticate, ObjectId, upload);
 require('./routes/users')(client, app, authenticate, bcrypt, jwt);
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-
+run().catch(console.dir);

@@ -54,7 +54,8 @@ export default {
     name: 'CarsSold',
     data() {
         return {
-            cars: []
+            cars: [],
+            error: null
         };
     },
     async created() {
@@ -84,8 +85,19 @@ export default {
 
             console.log('cars sold:', this.cars);
         } catch (error) {
-            console.error('Error fetching sold cars:', error.response ? error.response.data : error.message);
+            if (error.response && error.response.status === 401) {
+                // Token is invalid or expired
+                localStorage.removeItem('token');
+                this.$router.push('/login');
+            } else {
+                this.error = 'Failed to fetch sold cars. Please try again later.';
+                console.error('Error fetching sold cars:', error.response ? error.response.data : error.message);
+            }
         }
     }
 };
 </script>
+
+<style scoped>
+/* Add any additional styles if needed */
+</style>
