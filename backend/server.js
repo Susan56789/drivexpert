@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { MongoClient } = require("mongodb");
+const multer = require('multer');
+
 
 
 const app = express();
@@ -78,6 +80,27 @@ const createTextIndex = async (collection) => {
     }
 };
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, '/uploads');
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        const mimeType = file.mimetype;
+        if (mimeType === 'image/jpeg' || mimeType === 'image/png' || mimeType === 'image/webp') {
+            cb(null, true);
+        } else {
+            cb(new Error('Only JPEG, PNG, and WebP files are allowed'));
+        }
+    }
+});
+
 async function run() {
     try {
         await client.connect();
@@ -101,7 +124,7 @@ app.get("/", (req, res) => {
 
 
 //ROUTES
-require('./routes/cars')(client, app, authenticate, ObjectId, jwt);
+require('./routes/cars')(client, app, authenticate, ObjectId, upload);
 require('./routes/users')(client, app, authenticate, bcrypt, jwt);
 
 

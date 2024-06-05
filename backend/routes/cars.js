@@ -1,31 +1,6 @@
-module.exports = (client, app, authenticate, ObjectId, jwt) => {
+module.exports = (client, app, authenticate, ObjectId, upload) => {
     const database = client.db("driveexpert");
     const cars = database.collection("cars");
-    const multer = require('multer');
-
-    const path = require('path');
-
-    const storage = multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, 'uploads/');
-        },
-        filename: (req, file, cb) => {
-            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-        }
-    });
-
-    const upload = multer({
-        storage: storage,
-        fileFilter: (req, file, cb) => {
-            const mimeType = file.mimetype;
-            if (mimeType === 'image/jpeg' || mimeType === 'image/png' || mimeType === 'image/webp') {
-                cb(null, true);
-            } else {
-                cb(new Error('Only JPEG, PNG, and WebP files are allowed'));
-            }
-        }
-    });
-
 
 
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
