@@ -30,7 +30,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
     helmet({
         crossOriginEmbedderPolicy: false,
-        // ...
     })
 );
 

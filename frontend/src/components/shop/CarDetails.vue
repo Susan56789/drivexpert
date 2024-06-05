@@ -3,10 +3,8 @@
         <div v-if="car">
             <h1 class="text-3xl font-bold mb-4">{{ car.carName }}</h1>
             <div v-if="car.images && car.images.length" class="flex overflow-x-scroll space-x-4 mb-4">
-                <div v-for="(image, index) in car.images" :key="index" class="flex-shrink-0">
-                    <img :src="getImageUrl(image.filename)" :alt="car.carName"
-                        class="w-48 h-48 object-cover rounded-md" />
-                </div>
+                <img crossorigin="anonymous" :src=car.images[0].url :alt="car.carName"
+                    class="w-full h-48 object-cover rounded-md" />
             </div>
             <p><strong>Price:</strong> ${{ car.price }}</p>
             <p><strong>Year:</strong> {{ car.year }}</p>
@@ -45,6 +43,7 @@ export default {
         async fetchCarDetails() {
             try {
                 const response = await axios.get(`https://drivexpert.onrender.com/api/cars/${this.id}`);
+
                 this.car = response.data;
             } catch (error) {
                 console.error('Error fetching car details:', error);
