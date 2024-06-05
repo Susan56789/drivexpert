@@ -45,6 +45,7 @@ export default {
         async fetchCars() {
             try {
                 const response = await axios.get('https://drivexpert.onrender.com/api/cars');
+
                 this.cars = response.data;
             } catch (error) {
                 console.error('Error fetching cars:', error);
