@@ -15,11 +15,13 @@
                         <div class="flex justify-between items-center">
                             <p class="text-gray-500 font-medium hidden md:block">{{ car.carName }}</p>
                             <div class="flex items-center">
-                                <p class="text-gray-500 font-medium hidden md:block">{{ car.condition }}</p>
+                                <div
+                                    class="bg-yellow-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 hidden md:block">
+                                    {{ car.condition }}</div>
                             </div>
 
                             <div
-                                class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 hidden md:block">
+                                class="bg-green-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 hidden md:block">
                                 {{ car.year }}</div>
                         </div>
                         <p class="text-xl font-black text-gray-800">{{ formatCurrency(car.price) }}</p>

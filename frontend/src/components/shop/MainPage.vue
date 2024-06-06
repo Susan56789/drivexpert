@@ -20,8 +20,11 @@
                 <button @click="filterCars" class="px-4 py-2 bg-red-500 text-white rounded">Apply</button>
             </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div v-if="displayedCars && displayedCars.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <CarItem v-for="car in displayedCars" :key="car._id" :car="car" />
+        </div>
+        <div v-else>
+            <h2>No Cars Posted Yet</h2>
         </div>
         <Pagination :total="totalPages" @page-change="changePage" />
     </div>
