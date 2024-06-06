@@ -138,11 +138,11 @@ export default {
                     alert('Car posted successfully!');
                     this.resetForm();
                 } else {
-                    this.errorMessage = 'Failed to post car.';
+                    alert('Failed to post car.');
                 }
             } catch (error) {
                 console.error('Error posting car:', error);
-                this.errorMessage = 'An error occurred while posting the car.';
+                alert('An error occurred while posting the car.');
             }
         },
         resetForm() {
@@ -161,7 +161,8 @@ export default {
             };
             document.getElementById('images-input').value = '';
         }
-    },
+    }
+    ,
     created() {
         const token = localStorage.getItem('token');
         if (token) {
@@ -179,6 +180,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Your styles here */
-</style>
+<style scoped></style>
