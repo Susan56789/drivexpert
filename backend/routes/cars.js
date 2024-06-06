@@ -17,7 +17,7 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
         condition: Joi.string().required()
     });
 
-    const createImageURL = (filename) => `https://drivexpert.onrender.com/uploads/${filename}`;
+    const createImageURL = (filename) => `https://drivexpert.vercel.app/uploads/${filename}`;
 
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
         try {
@@ -37,8 +37,7 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
             // Process images if provided
             const images = req.files ? req.files.map(file => ({
                 filename: file.filename,
-                extension: file.mimetype.split('/')[1],
-                url: createImageURL(file.filename) // Store the image URL
+                extension: file.mimetype.split('/')[1]
             })) : [];
 
             // Create new car object
@@ -64,6 +63,14 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
     app.get('/api/cars', async (req, res) => {
         try {
             const carsList = await cars.find().toArray();
+            carsList.forEach(car => {
+                if (car.images && car.images.length) {
+                    car.images = car.images.map(image => ({
+                        filename: image.filename,
+                        url: createImageURL(image.filename)
+                    }));
+                }
+            });
             res.status(200).json(carsList);
         } catch (error) {
             console.error('Error fetching cars:', error);
@@ -81,13 +88,12 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
                 if (car.images && car.images.length) {
                     car.images = car.images.map(image => ({
                         filename: image.filename,
-                        url: image.url // Use the stored URL
+                        url: createImageURL(image.filename)
                     }));
                 }
             });
 
             res.status(200).json(soldCars);
-
         } catch (error) {
             console.error('Error fetching sold cars:', error);
             res.status(500).json({ message: "Error fetching sold cars", error: error.message });
