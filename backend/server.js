@@ -10,12 +10,6 @@ const { MongoClient } = require("mongodb");
 const multer = require('multer');
 const helmet = require('helmet');
 
-// Validate environment variables
-if (!process.env.MONGODB_URI || !process.env.JWT_SECRET) {
-    console.error("Missing essential environment variables.");
-    process.exit(1);
-}
-
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -47,9 +41,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
         }
     }
 }));
-
-// Serve Vue.js static files
-app.use(express.static(path.join(__dirname, 'dist')));
 
 // Authentication Middleware
 const authenticate = (req, res, next) => {
@@ -123,7 +114,7 @@ const createTextIndex = async (collection) => {
 
 // Default landing page
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    res.send("Welcome to DrivExpert Backend!");
 });
 
 // Error handling middleware
@@ -135,11 +126,6 @@ app.use((err, req, res, next) => {
 // Import and initialize routes
 require('./routes/cars')(client, app, authenticate, ObjectId, upload);
 require('./routes/users')(client, app, authenticate, bcrypt, jwt);
-
-// Catch-all route to serve index.html for SPA routing
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
