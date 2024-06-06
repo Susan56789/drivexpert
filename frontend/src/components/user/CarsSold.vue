@@ -65,7 +65,7 @@ export default {
 
             this.cars = response.data
 
-            console.log('CARS SOLD:', response.data)
+            // console.log('CARS SOLD:', response.data)
 
 
         } catch (error) {
