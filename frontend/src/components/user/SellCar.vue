@@ -74,6 +74,8 @@ export default {
                 currentLocation: '',
                 description: '',
                 images: [],
+                condition: '',
+                transmission: '',
             },
             carFields: [
                 { id: 'carName', label: 'Name', model: 'carName', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
@@ -83,6 +85,8 @@ export default {
                 { id: 'price', label: 'Price', model: 'price', type: 'number', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
                 { id: 'year', label: 'Year', model: 'year', type: 'number', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
                 { id: 'currentLocation', label: 'Current Location', model: 'currentLocation', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'condition', label: 'Condition', model: 'condition', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
+                { id: 'transmission', label: 'Transmission', model: 'transmission', type: 'text', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', required: true },
                 { id: 'description', label: 'Description', model: 'description', type: 'textarea', class: 'w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500', rows: 4, required: true },
             ],
             user: {
@@ -152,6 +156,8 @@ export default {
                 currentLocation: '',
                 description: '',
                 images: [],
+                condition: '',
+                transmission: '',
             };
             document.getElementById('images-input').value = '';
         }

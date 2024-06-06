@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <CarItem v-for="car in displayedCars" :key="car._id" :car="car" />
         </div>
         <div class="mt-4 flex justify-center">
@@ -45,7 +45,6 @@ export default {
         async fetchCars() {
             try {
                 const response = await axios.get('https://drivexpert.onrender.com/api/cars');
-
                 this.cars = response.data;
             } catch (error) {
                 console.error('Error fetching cars:', error);
@@ -66,7 +65,6 @@ export default {
 </script>
 
 <style scoped>
-/* Add any scoped styles for your component here */
 button:disabled {
     cursor: not-allowed;
     opacity: 0.6;

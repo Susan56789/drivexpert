@@ -6,18 +6,18 @@
                 <label for="minPrice" class="mr-2">Price Range:</label>
                 <input type="number" v-model.number="minPrice" placeholder="Min" class="mr-2 border p-1">
                 <input type="number" v-model.number="maxPrice" placeholder="Max" class="mr-2 border p-1">
-                <button @click="filterCars" class="px-4 py-2 bg-blue-500 text-white rounded">Apply</button>
+                <button @click="filterCars" class="px-4 py-2 bg-red-500 text-white rounded">Apply</button>
             </div>
             <div class="mb-2 md:mb-0">
                 <label for="minYear" class="mr-2">Year:</label>
                 <input type="number" v-model.number="minYear" placeholder="Min Year" class="mr-2 border p-1">
                 <input type="number" v-model.number="maxYear" placeholder="Max Year" class="mr-2 border p-1">
-                <button @click="filterCars" class="px-4 py-2 bg-blue-500 text-white rounded">Apply</button>
+                <button @click="filterCars" class="px-4 py-2 bg-red-500 text-white rounded">Apply</button>
             </div>
             <div class="mb-2 md:mb-0">
                 <label for="keyword" class="mr-2">Keyword:</label>
                 <input type="text" v-model="keyword" placeholder="Search by keyword" class="mr-2 border p-1">
-                <button @click="filterCars" class="px-4 py-2 bg-blue-500 text-white rounded">Apply</button>
+                <button @click="filterCars" class="px-4 py-2 bg-red-500 text-white rounded">Apply</button>
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -94,7 +94,6 @@ export default {
                 this.cars = response.data;
             } catch (error) {
                 console.error('Error fetching car data:', error);
-                // Handle error gracefully
             }
         },
         filterCars() {
@@ -110,6 +109,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Add any scoped styles for your component here */
-</style>
+<style scoped></style>

@@ -12,7 +12,9 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
         price: Joi.number().required(),
         year: Joi.number().required(),
         currentLocation: Joi.string().required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+        transmission: Joi.string().required(),
+        condition: Joi.string().required()
     });
 
     const createImageURL = (filename) => `https://drivexpert.onrender.com/uploads/${filename}`;
@@ -23,8 +25,8 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
             const { name, email, phone } = req.user;
 
             // Extract and validate car data
-            const { carName, fuelType, engineSize, mileage, price, year, currentLocation, description } = req.body;
-            const carData = { carName, fuelType, engineSize, mileage, price, year, currentLocation, description };
+            const { carName, fuelType, engineSize, mileage, price, year, currentLocation, description, transmission, condition } = req.body;
+            const carData = { carName, fuelType, engineSize, mileage, price, year, currentLocation, description, transmission, condition };
 
             // Validate car data using Joi schema
             const { error } = carSchema.validate(carData);
