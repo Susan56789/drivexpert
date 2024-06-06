@@ -1,12 +1,5 @@
 User-agent: *
-Disallow: /admin/
-Disallow: /login
-Disallow: /register
-Disallow: /reset-password
-Disallow: /dashboard
-Disallow: /dashboard/sell-car
-Disallow: /dashboard/cars-sold
-Disallow: /api/
+
 
 # Allow all robots to access the sitemap
 Sitemap: https://drivexpert.vercel.app/sitemap.xml
