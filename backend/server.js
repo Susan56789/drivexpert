@@ -34,6 +34,7 @@ app.use(
     })
 );
 
+// Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
     setHeaders: (res, filePath) => {
         const type = mime.lookup(filePath);
@@ -66,7 +67,8 @@ const storage = multer.diskStorage({
         cb(null, 'uploads');
     },
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
     }
 });
 
