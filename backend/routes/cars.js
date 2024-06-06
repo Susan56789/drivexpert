@@ -17,7 +17,7 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
         condition: Joi.string().required()
     });
 
-    const createImageURL = (filename) => `https://drivexpert.vercel.app/uploads/${filename}`;
+    const createImageURL = (filename) => `https://drivexpert.onrender.com/uploads/${filename}`;
 
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
         try {
@@ -37,7 +37,8 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
             // Process images if provided
             const images = req.files ? req.files.map(file => ({
                 filename: file.filename,
-                extension: file.mimetype.split('/')[1]
+                extension: file.mimetype.split('/')[1],
+                url: createImageURL(file.filename)
             })) : [];
 
             // Create new car object
@@ -52,13 +53,12 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
             const result = await cars.insertOne(newCar);
 
             // Respond with the created car data
-            res.status(201).json(result);
+            res.status(201).json(result.ops[0]);
         } catch (error) {
             console.error('Error posting car:', error);
             res.status(500).json({ message: "Error posting car", error: error.message });
         }
     });
-
 
     app.get('/api/cars', async (req, res) => {
         try {
@@ -121,7 +121,7 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
                 }));
             }
 
-            res.json(car);
+            res.status(200).json(car);
         } catch (error) {
             console.error('Error fetching car by ID:', error);
             res.status(500).json({ message: 'Error fetching car by ID', error });

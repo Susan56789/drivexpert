@@ -81,6 +81,19 @@ const upload = multer({
     }
 });
 
+
+const createTextIndex = async (collection) => {
+    const indexes = await collection.indexes();
+    const hasTextIndex = indexes.some(index => index.key && index.key._fts === "text");
+
+    if (!hasTextIndex) {
+        await collection.createIndex({ title: "text", description: "text" });
+        console.log("Text index created on 'title' and 'description' fields.");
+    } else {
+        console.log("Text index already exists on 'title' and 'description' fields.");
+    }
+};
+
 // Database connection and initialization
 async function run() {
     try {
@@ -99,18 +112,6 @@ async function run() {
         console.error("Error connecting to the database:", err);
     }
 }
-
-const createTextIndex = async (collection) => {
-    const indexes = await collection.indexes();
-    const hasTextIndex = indexes.some(index => index.key && index.key._fts === "text");
-
-    if (!hasTextIndex) {
-        await collection.createIndex({ title: "text", description: "text" });
-        console.log("Text index created on 'title' and 'description' fields.");
-    } else {
-        console.log("Text index already exists on 'title' and 'description' fields.");
-    }
-};
 
 // Default landing page
 app.get("/", (req, res) => {
