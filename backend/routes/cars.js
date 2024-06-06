@@ -60,6 +60,7 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
         }
     });
 
+
     app.get('/api/cars', async (req, res) => {
         try {
             const carsList = await cars.find().toArray();
@@ -86,6 +87,7 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
             });
 
             res.status(200).json(soldCars);
+
         } catch (error) {
             console.error('Error fetching sold cars:', error);
             res.status(500).json({ message: "Error fetching sold cars", error: error.message });
