@@ -114,15 +114,17 @@ export default {
         async submitForm() {
             try {
                 const formData = new FormData();
-                Object.keys(this.form).forEach(key => {
+                // Append all form fields to the FormData object
+                for (const [key, value] of Object.entries(this.form)) {
                     if (key !== 'images') {
-                        formData.append(key, this.form[key]);
+                        formData.append(key, value);
                     }
-                });
+                }
 
-                this.form.images.forEach((image) => {
+                // Append image files to the FormData object
+                for (const image of this.form.images) {
                     formData.append('images', image.file);
-                });
+                }
 
                 const token = localStorage.getItem('token');
                 if (!token) throw new Error('Authentication token is missing.');
@@ -160,6 +162,7 @@ export default {
                 transmission: '',
             };
             document.getElementById('images-input').value = '';
+            this.errorMessage = '';
         }
     }
     ,
