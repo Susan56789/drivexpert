@@ -8,26 +8,14 @@
                             <h2>
                                 <span>DrivExpert <br>Automotive</span>
                             </h2>
-                            <!-- <p>
-                                Your trusted destination for expert guidance, exceptional service, and a seamless
-                                car-buying experience. Discover your perfect vehicle with us today.
-                            </p> -->
+
                         </div>
                         <button class="discover-btn">
                             <a href="#">discover </a> <span>
                                 <i class="fa-solid fa-circle-arrow-right"></i>
                             </span>
                         </button>
-                        <!-- <div class="information">
-                            <div class="production">
-                                <h2>Inception</h2>
-                                <p>Established in 2010 by automotive enthusiasts with a vision.</p>
-                            </div>
-                            <div class="production">
-                                <h2>Evolution</h2>
-                                <p>From a local dealership to a global authority, DriveXpert redefines car buying.</p>
-                            </div>
-                        </div> -->
+
                     </div>
                     <div class='right-sec  !col-span-1'>
                         <div class="my-car">

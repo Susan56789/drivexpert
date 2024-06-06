@@ -29,9 +29,9 @@
                             @click="isActive = 'Contact Us'">Contact Us</a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-300 hover:text-white py-2
+                        <a href="/dashboard/sell-car" class="text-gray-300 hover:text-white py-2
                          px-4 rounded-md transition duration-300" :class="{ 'bg-gray-700': isActive === 'Reviews' }"
-                            @click="isActive = 'Reviews'">Reviews</a>
+                            @click="isActive = 'Reviews'">Sell Your Car</a>
                     </li>
                 </ul>
             </div>
@@ -65,9 +65,10 @@
                         Us</a>
                 </li>
                 <li>
-                    <a href="#"
+                    <a href="/dashboard/sell-car"
                         class="block text-gray-300 hover:text-white py-2 px-4 rounded-md transition duration-300"
-                        :class="{ 'bg-gray-700': isActive === 'Reviews' }" @click="isActive = 'Reviews'">Reviews</a>
+                        :class="{ 'bg-gray-700': isActive === 'Reviews' }" @click="isActive = 'Reviews'">Sell Your
+                        Car</a>
                 </li>
             </ul>
         </div>
