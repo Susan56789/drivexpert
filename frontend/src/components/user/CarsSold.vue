@@ -65,6 +65,8 @@ export default {
 
             this.cars = response.data
 
+            console.log('CARS SOLD:', response.data)
+
 
         } catch (error) {
             if (error.response && error.response.status === 401) {
