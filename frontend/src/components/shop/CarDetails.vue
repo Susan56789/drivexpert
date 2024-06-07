@@ -5,7 +5,7 @@
             <div v-if="car.images && car.images.length" class="flex space-x-4 mb-4">
                 <carousel :items-to-show="1.5">
                     <slide v-for="image in car.images" :key="image.url">
-                        <img crossorigin="anonymous" :src="image.url" :alt="car.carName"
+                        <img crossorigin="anonymous" :src="getImageUrl(image.filename)" :alt="car.carName"
                             class="w-full h-300 object-cover rounded-md" />
                     </slide>
                     <template #addons>
@@ -21,40 +21,58 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ad Created</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ dateTime(car.createdAt) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ad Created
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
+            dateTime(car.createdAt) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Price</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatCurrency(car.price) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
+            formatCurrency(car.price) }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Year</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.year }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Fuel Type</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.fuelType }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Fuel Type
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.fuelType }}
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Engine Size</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatNumber(car.engineSize) }} CC</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Engine
+                                        Size</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
+            formatNumber(car.engineSize) }}
+                                        CC</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Transmission</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.transmission }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        Transmission</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.transmission }}
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Mileage</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatNumber(car.mileage) }} KM</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Mileage
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
+                                        formatNumber(car.mileage) }} KM
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Condition</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.condition }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Condition
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.condition }}
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Location</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.currentLocation }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Location
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.currentLocation
+                                        }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -124,6 +142,9 @@ export default {
         },
         formatNumber(number) {
             return Intl.NumberFormat().format(number);
+        },
+        getImageUrl(filename) {
+            return `https://drivexpert.onrender.com/api/images/${filename}`;
         }
     }
 };
@@ -138,7 +159,7 @@ export default {
     overflow-x: scroll;
 }
 
-.space-x-4 > * + * {
+.space-x-4>*+* {
     margin-left: 1rem;
 }
 </style>

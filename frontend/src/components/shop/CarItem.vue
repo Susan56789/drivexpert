@@ -1,8 +1,10 @@
 <template>
     <router-link :to="`/cars/${car._id}`">
-        <div class="mx-auto mt-11 transform overflow-hidden rounded-lg bg-white shadow-md duration-300 hover:scale-105 hover:shadow-lg w-full max-w-xs sm:max-w-sm">
-            <img v-if="car.images && car.images.length"
-                class="h-48 w-full object-cover object-center" :src="car.images[0].url" :alt="car.carName" />
+        <div
+            class="mx-auto mt-11 transform overflow-hidden rounded-lg bg-white shadow-md duration-300 hover:scale-105 hover:shadow-lg w-full max-w-xs sm:max-w-sm">
+            <img crossorigin="anonymous" v-if="car.images && car.images.length"
+                class="h-48 w-full object-cover object-center" :src="getImageUrl(car.images[0].filename)"
+                :alt="car.carName" />
             <div class="p-4">
                 <h2 class="mb-2 text-lg font-medium text-gray-900">{{ car.carName }}</h2>
                 <p class="mr-2 text-lg font-semibold text-gray-900">{{ formatCurrency(car.price) }}</p>
@@ -42,12 +44,14 @@ export default {
             const numericValue = parseFloat(value);
             return isNaN(numericValue) ? '-' : numericValue.toLocaleString('en-KE', { style: 'currency', currency: 'KES' });
         },
+        getImageUrl(filename) {
+            return `https://drivexpert.onrender.com/api/images/${filename}`;
+        }
     }
 };
 </script>
 
 <style scoped>
-
 @media (max-width: 640px) {
     .card-container {
         width: 100%;
