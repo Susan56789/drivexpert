@@ -96,6 +96,7 @@ async function run() {
     }
 }
 
+
 const createTextIndex = async (collection) => {
     const indexes = await collection.indexes();
     const hasTextIndex = indexes.some(index => index.key && index.key._fts === "text");
