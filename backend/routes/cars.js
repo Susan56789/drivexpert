@@ -1,11 +1,11 @@
 const Joi = require('joi'); // Add Joi for validation
 const sharp = require('sharp'); // Add sharp for image processing
 
+
 module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
     const database = client.db("driveexpert");
     const cars = database.collection("cars");
 
-    // Joi schema for car validation
     const carSchema = Joi.object({
         carName: Joi.string().required(),
         fuelType: Joi.string().required(),
@@ -21,12 +21,10 @@ module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
 
     const createImageURL = (filename) => `/api/images/${filename}`;
 
-    // Route to create a new car
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
         try {
             const { name, email, phone } = req.user;
 
-            // Extract and validate car data
             const carData = {
                 carName: req.body.carName,
                 fuelType: req.body.fuelType,
@@ -45,9 +43,8 @@ module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
                 return res.status(400).json({ message: "Invalid data", error: error.details[0].message });
             }
 
-            // Process images if provided
             const images = [];
-            if (req.files) {
+            if (req.files && req.files.length > 0) {
                 for (const file of req.files) {
                     const webpBuffer = await sharp(file.buffer)
                         .webp({ quality: 80 })
@@ -61,7 +58,6 @@ module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
                 }
             }
 
-            // Create new car object
             const newCar = {
                 ...carData,
                 images,
@@ -69,10 +65,8 @@ module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
                 createdAt: new Date()
             };
 
-            // Insert the new car into the database
             const result = await cars.insertOne(newCar);
 
-            // Respond with the created car data
             res.status(201).json(result.ops[0]);
         } catch (error) {
             console.error('Error posting car:', error);

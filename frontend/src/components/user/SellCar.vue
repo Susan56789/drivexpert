@@ -114,14 +114,11 @@ export default {
         async submitForm() {
             try {
                 const formData = new FormData();
-                // Append all form fields to the FormData object
                 for (const [key, value] of Object.entries(this.form)) {
                     if (key !== 'images') {
                         formData.append(key, value);
                     }
                 }
-
-                // Append image files to the FormData object
                 for (const image of this.form.images) {
                     formData.append('images', image.file);
                 }
@@ -144,7 +141,7 @@ export default {
                 }
             } catch (error) {
                 console.error('Error posting car:', error);
-                this.errorMessage = 'An error occurred while posting the car.';
+                this.errorMessage = error.response?.data?.error || 'An error occurred while posting the car.';
             }
         },
         resetForm() {
