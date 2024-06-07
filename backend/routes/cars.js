@@ -70,6 +70,7 @@ module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
             res.status(201).json(result.ops[0]);
         } catch (error) {
             console.error('Error posting car:', error);
+            console.error('Error details:', error.stack); // Add error stack trace
             res.status(500).json({ message: "Error posting car", error: error.message });
         }
     });

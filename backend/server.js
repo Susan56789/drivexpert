@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const { MongoClient, GridFSBucket, ObjectId } = require("mongodb");
 const multer = require('multer');
 const helmet = require('helmet');
-const sharp = require('sharp');
+
 
 // Initialize Express app
 const app = express();
@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 
 // MongoDB URI
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(uri);
 
 // Middleware setup
 app.use(cors({

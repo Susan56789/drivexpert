@@ -94,7 +94,7 @@ export default {
         async fetchCarData() {
             try {
                 const response = await axios.get('https://drivexpert.onrender.com/api/cars');
-                this.cars = response.data;
+                this.cars = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             } catch (error) {
                 console.error('Error fetching car data:', error);
             }

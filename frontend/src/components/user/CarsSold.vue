@@ -63,8 +63,8 @@ export default {
                 }
             });
 
-            this.cars = response.data;
-            // console.log('CARS SOLD:', response.data);
+            this.cars = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
 
         } catch (error) {
             if (error.response && error.response.status === 401) {
