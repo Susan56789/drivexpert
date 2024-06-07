@@ -72,26 +72,16 @@
 
         <!-- Reviews Section -->
         <section class="reviews bg-gray-100 py-12">
-            <h2 class="text-3xl font-bold text-center mb-8">Customer Reviews</h2>
-            <div class="review-cards !grid md:!grid-cols-3 sm:!grid-cols-1 gap-8">
-                <div class="review-card bg-white p-6 rounded-lg shadow-md">
-                    <p class="text-gray-600 mb-4">"Excellent service! The team at DrivExpert really went above and
-                        beyond."</p>
-                    <span class="text-gray-800 font-bold">- John Doe</span>
-                </div>
-                <div class="review-card bg-white p-6 rounded-lg shadow-md">
-                    <p class="text-gray-600 mb-4">"I highly recommend DrivExpert for all your automotive needs."</p>
-                    <span class="text-gray-800 font-bold">- Jane Smith</span>
-                </div>
-                <div class="review-card bg-white p-6 rounded-lg shadow-md">
-                    <p class="text-gray-600 mb-4">"The team at DrivExpert is knowledgeable, friendly, and professional."
-                    </p>
-                    <span class="text-gray-800 font-bold">- Bob Johnson</span>
-                </div>
+            <h2 class="text-3xl font-bold text-center mb-8">New Arrivals</h2>
+            <div v-if="loading" class="text-center">Loading cars...</div>
+            <div v-else-if="error" class="text-center text-red-500">{{ error }}</div>
+            <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <car-item v-for="car in cars" :key="car._id" :car="car"></car-item>
             </div>
             <div class="text-center mt-8">
-                <button class="view-all-reviews bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">View
-                    All Reviews</button>
+                <a href="/cars"
+                    class="view-all-reviews bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">View
+                    All Cars</a>
             </div>
         </section>
 
@@ -109,11 +99,20 @@
 </template>
 
 <script>
+import axios from 'axios';
+import CarItem from '../components/shop/CarItem.vue';
+
 export default {
     name: 'HomePage',
+    components: {
+        CarItem
+    },
     data() {
         return {
             currentIndex: 0,
+            cars: [],
+            loading: true,
+            error: '',
             items: [
                 { image: '/assets/images/car9.png' },
                 { image: '/assets/images/car2.png' },
@@ -122,6 +121,17 @@ export default {
                 { image: '/assets/images/car5.png' },
             ]
         };
+    },
+    async created() {
+        try {
+            const response = await axios.get('https://drivexpert.onrender.com/api/cars');
+            const carData = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            this.cars = carData.slice(0, 4)
+        } catch (error) {
+            this.error = 'Failed to fetch cars. Please try again later.';
+        } finally {
+            this.loading = false;
+        }
     },
     methods: {
         moveNext() {
