@@ -1,7 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const mime = require('mime-types');
-const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');

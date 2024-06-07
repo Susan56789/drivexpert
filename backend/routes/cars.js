@@ -1,4 +1,5 @@
 const Joi = require('joi'); // Add Joi for validation
+const sharp = require('sharp'); // Add sharp for image processing
 
 module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
     const database = client.db("driveexpert");
@@ -72,7 +73,7 @@ module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
             const result = await cars.insertOne(newCar);
 
             // Respond with the created car data
-            res.status(201).json(result);
+            res.status(201).json(result.ops[0]);
         } catch (error) {
             console.error('Error posting car:', error);
             res.status(500).json({ message: "Error posting car", error: error.message });
@@ -139,7 +140,6 @@ module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
         }
     });
 
-    
     // Route to get a car by ID
     app.get('/api/cars/:id', async (req, res) => {
         try {
