@@ -6,7 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { MongoClient, GridFSBucket } = require("mongodb");
+const { MongoClient, GridFSBucket, ObjectId } = require("mongodb");
 const multer = require('multer');
 const helmet = require('helmet');
 const sharp = require('sharp');
@@ -14,25 +14,22 @@ const sharp = require('sharp');
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
-const ObjectId = require("mongodb").ObjectId;
 
 // MongoDB URI
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Middleware setup
 app.use(cors({
-    origin: '*', // Allow all origins
+    origin: '*',
     methods: 'GET,POST,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization'
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-    helmet({
-        crossOriginEmbedderPolicy: false,
-    })
-);
+app.use(helmet({
+    crossOriginEmbedderPolicy: false,
+}));
 
 // Set up multer for handling file uploads
 const storage = multer.memoryStorage();
@@ -66,7 +63,7 @@ const authenticate = (req, res, next) => {
 };
 
 // Connect to the database and initialize collections
-async function run() {
+const run = async () => {
     try {
         await client.connect();
         console.log("Connected to the database");
@@ -94,8 +91,7 @@ async function run() {
     } catch (err) {
         console.error("Error connecting to the database:", err);
     }
-}
-
+};
 
 const createTextIndex = async (collection) => {
     const indexes = await collection.indexes();
@@ -110,3 +106,10 @@ const createTextIndex = async (collection) => {
 };
 
 run().catch(console.dir);
+
+// Close MongoDB connection on server shutdown
+process.on('SIGINT', async () => {
+    await client.close();
+    console.log('MongoDB connection closed');
+    process.exit(0);
+});
