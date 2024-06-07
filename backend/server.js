@@ -6,9 +6,10 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { MongoClient } = require("mongodb");
+const { MongoClient, GridFSBucket } = require("mongodb");
 const multer = require('multer');
 const helmet = require('helmet');
+const sharp = require('sharp');
 
 // Initialize Express app
 const app = express();
@@ -33,14 +34,19 @@ app.use(
     })
 );
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
-    setHeaders: (res, filePath) => {
-        const type = mime.lookup(filePath);
-        if (type) {
-            res.setHeader('Content-Type', type);
+// Set up multer for handling file uploads
+const storage = multer.memoryStorage();
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        const mimeType = file.mimetype;
+        if (mimeType === 'image/jpeg' || mimeType === 'image/png' || mimeType === 'image/webp') {
+            cb(null, true);
+        } else {
+            cb(new Error('Only JPEG, PNG, and WebP files are allowed'));
         }
     }
-}));
+});
 
 // Authentication Middleware
 const authenticate = (req, res, next) => {
@@ -59,29 +65,7 @@ const authenticate = (req, res, next) => {
     }
 };
 
-// File upload setup
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads');
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
-
-const upload = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        const mimeType = file.mimetype;
-        if (mimeType === 'image/jpeg' || mimeType === 'image/png' || mimeType === 'image/webp') {
-            cb(null, true);
-        } else {
-            cb(new Error('Only JPEG, PNG, and WebP files are allowed'));
-        }
-    }
-});
-
-// Database connection and initialization
+// Connect to the database and initialize collections
 async function run() {
     try {
         await client.connect();
@@ -90,10 +74,22 @@ async function run() {
         const database = client.db("driveexpert");
         const cars = database.collection("cars");
         const users = database.collection("users");
+        const bucket = new GridFSBucket(database, {
+            bucketName: 'images'
+        });
         console.log("Collections initialized");
 
         // Ensure text index on 'cars' collection
         await createTextIndex(cars);
+
+        // Import and initialize routes
+        require('./routes/cars')(client, app, authenticate, ObjectId, upload, bucket);
+        require('./routes/users')(client, app, authenticate, bcrypt, jwt);
+
+        // Start the server
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
 
     } catch (err) {
         console.error("Error connecting to the database:", err);
@@ -111,24 +107,5 @@ const createTextIndex = async (collection) => {
         console.log("Text index already exists on 'title' and 'description' fields.");
     }
 };
-
-// Default landing page
-app.get("/", (req, res) => {
-    res.send("Welcome to DrivExpert Backend!");
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send({ message: 'Something went wrong!' });
-});
-
-// Import and initialize routes
-require('./routes/cars')(client, app, authenticate, ObjectId, upload);
-require('./routes/users')(client, app, authenticate, bcrypt, jwt);
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
 
 run().catch(console.dir);

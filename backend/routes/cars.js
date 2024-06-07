@@ -1,9 +1,10 @@
 const Joi = require('joi'); // Add Joi for validation
 
-module.exports = (client, app, authenticate, ObjectId, upload) => {
+module.exports = (client, app, authenticate, ObjectId, upload, bucket) => {
     const database = client.db("driveexpert");
     const cars = database.collection("cars");
 
+    // Joi schema for car validation
     const carSchema = Joi.object({
         carName: Joi.string().required(),
         fuelType: Joi.string().required(),
@@ -17,28 +18,47 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
         condition: Joi.string().required()
     });
 
-    const createImageURL = (filename) => `https://drivexpert.onrender.com/uploads/${filename}`;
+    const createImageURL = (filename) => `/api/images/${filename}`;
 
+    // Route to create a new car
     app.post('/api/cars', authenticate, upload.array('images', 10), async (req, res) => {
         try {
-            // Extract user information from authentication middleware
             const { name, email, phone } = req.user;
 
             // Extract and validate car data
-            const { carName, fuelType, engineSize, mileage, price, year, currentLocation, description, transmission, condition } = req.body;
-            const carData = { carName, fuelType, engineSize, mileage, price, year, currentLocation, description, transmission, condition };
+            const carData = {
+                carName: req.body.carName,
+                fuelType: req.body.fuelType,
+                engineSize: req.body.engineSize,
+                mileage: req.body.mileage,
+                price: req.body.price,
+                year: req.body.year,
+                currentLocation: req.body.currentLocation,
+                description: req.body.description,
+                transmission: req.body.transmission,
+                condition: req.body.condition
+            };
 
-            // Validate car data using Joi schema
             const { error } = carSchema.validate(carData);
             if (error) {
                 return res.status(400).json({ message: "Invalid data", error: error.details[0].message });
             }
 
             // Process images if provided
-            const images = req.files ? req.files.map(file => ({
-                filename: file.filename,
-                extension: file.mimetype.split('/')[1]
-            })) : [];
+            const images = [];
+            if (req.files) {
+                for (const file of req.files) {
+                    const webpBuffer = await sharp(file.buffer)
+                        .webp({ quality: 80 })
+                        .toBuffer();
+
+                    const uploadStream = bucket.openUploadStream(file.originalname + '.webp', {
+                        contentType: 'image/webp'
+                    });
+                    uploadStream.end(webpBuffer);
+                    images.push({ filename: file.originalname + '.webp' });
+                }
+            }
 
             // Create new car object
             const newCar = {
@@ -59,7 +79,7 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
         }
     });
 
-
+    // Route to get all cars
     app.get('/api/cars', async (req, res) => {
         try {
             const carsList = await cars.find().toArray();
@@ -78,12 +98,11 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
         }
     });
 
+    // Route to get sold cars for the authenticated user
     app.get('/api/cars/sold', authenticate, async (req, res) => {
         try {
             const { email } = req.user;
-
             const soldCars = await cars.find({ 'seller.email': email }).toArray();
-
             soldCars.forEach(car => {
                 if (car.images && car.images.length) {
                     car.images = car.images.map(image => ({
@@ -92,7 +111,6 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
                     }));
                 }
             });
-
             res.status(200).json(soldCars);
         } catch (error) {
             console.error('Error fetching sold cars:', error);
@@ -100,6 +118,29 @@ module.exports = (client, app, authenticate, ObjectId, upload) => {
         }
     });
 
+    // Route to serve images from GridFS
+    app.get('/api/images/:filename', async (req, res) => {
+        try {
+            const { filename } = req.params;
+            const downloadStream = bucket.openDownloadStreamByName(filename);
+
+            downloadStream.on('file', (file) => {
+                res.set('Content-Type', file.contentType);
+            });
+
+            downloadStream.on('error', (err) => {
+                res.status(404).json({ message: 'Image not found' });
+            });
+
+            downloadStream.pipe(res);
+        } catch (error) {
+            console.error('Error fetching image:', error);
+            res.status(500).json({ message: 'Error fetching image', error });
+        }
+    });
+
+    
+    // Route to get a car by ID
     app.get('/api/cars/:id', async (req, res) => {
         try {
             const carId = req.params.id;

@@ -1,8 +1,7 @@
 <template>
     <router-link :to="`/cars/${car._id}`">
-        <div
-            class="mx-auto mt-11 transform overflow-hidden rounded-lg bg-white shadow-md duration-300 hover:scale-105 hover:shadow-lg w-full max-w-xs sm:max-w-sm">
-            <img crossorigin="anonymous" v-if="car.images && car.images.length"
+        <div class="mx-auto mt-11 transform overflow-hidden rounded-lg bg-white shadow-md duration-300 hover:scale-105 hover:shadow-lg w-full max-w-xs sm:max-w-sm">
+            <img v-if="car.images && car.images.length"
                 class="h-48 w-full object-cover object-center" :src="car.images[0].url" :alt="car.carName" />
             <div class="p-4">
                 <h2 class="mb-2 text-lg font-medium text-gray-900">{{ car.carName }}</h2>
@@ -48,7 +47,7 @@ export default {
 </script>
 
 <style scoped>
-/* Ensure the card fits well on different screen sizes */
+
 @media (max-width: 640px) {
     .card-container {
         width: 100%;

@@ -17,72 +17,50 @@
             <p class="mt-4">{{ car.description }}</p>
             <div class="flex flex-col lg:flex-row gap-4 p-1">
                 <div class="w-full lg:w-2/3 rounded-lg p-4 bg-white shadow-md">
-                    <!-- Main Content -->
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ad Created
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
-            dateTime(car.createdAt) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ad Created</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ dateTime(car.createdAt) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Price</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
-            formatCurrency(car.price) }}
-                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatCurrency(car.price) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Year</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.year }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Fuel Type
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.fuelType }}
-                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Fuel Type</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.fuelType }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Engine
-                                        Size</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
-            formatNumber(car.engineSize)
-        }} CC
-                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Engine Size</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatNumber(car.engineSize) }} CC</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        Transmission
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.transmission }}
-                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Transmission</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.transmission }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Mileage
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
-            formatNumber(car.mileage) }} KM
-                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Mileage</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatNumber(car.mileage) }} KM</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Condition
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.condition }}
-                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Condition</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.condition }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Location
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.currentLocation
-                                        }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Location</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ car.currentLocation }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="w-full lg:w-1/3 rounded-lg p-4 bg-yellow-300 shadow-md">
-                    <!-- Sidebar -->
                     <section class="flex items-center border-l-8 border-yellow-500 bg-yellow-50 p-4 text-gray-900">
                         <div class="min-w-0">
                             <h2 class="text-lg font-semibold">Seller Details</h2>
@@ -137,9 +115,6 @@ export default {
                 console.error('Error fetching car details:', error);
             }
         },
-        getImageUrl(filename) {
-            return `https://drivexpert.onrender.com/uploads/${filename}`;
-        },
         formatCurrency(value) {
             const numericValue = parseFloat(value);
             return isNaN(numericValue) ? '-' : numericValue.toLocaleString('en-KE', { style: 'currency', currency: 'KES' });
@@ -163,7 +138,7 @@ export default {
     overflow-x: scroll;
 }
 
-.space-x-4>*+* {
+.space-x-4 > * + * {
     margin-left: 1rem;
 }
 </style>
