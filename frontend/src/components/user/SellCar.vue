@@ -112,32 +112,35 @@ export default {
             this.form.images.splice(index, 1);
         },
         async submitForm() {
-
-            const formData = new FormData();
-            for (const [key, value] of Object.entries(this.form)) {
-                if (key !== 'images') {
-                    formData.append(key, value);
+            try {
+                const formData = new FormData();
+                for (const [key, value] of Object.entries(this.form)) {
+                    if (key !== 'images') {
+                        formData.append(key, value);
+                    }
                 }
-            }
-            for (const image of this.form.images) {
-                formData.append('images', image.file);
-            }
-
-            const token = localStorage.getItem('token');
-            if (!token) throw new Error('Authentication token is missing.');
-
-            const response = await axios.post('https://drivexpert.onrender.com/api/cars', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
+                for (const image of this.form.images) {
+                    formData.append('images', image.file);
                 }
-            });
 
-            if (response.status === 201) {
-                alert('Car posted successfully!');
-                this.resetForm();
-            } else {
-                this.errorMessage = 'Failed to post car.';
+                const token = localStorage.getItem('token');
+                if (!token) throw new Error('Authentication token is missing.');
+
+                const response = await axios.post('https://drivexpert.onrender.com/api/cars', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 201) {
+                    alert('Car posted successfully!');
+                    this.resetForm();
+                } else {
+                    throw new Error('Failed to post car.');
+                }
+            } catch (error) {
+                this.errorMessage = error.message;
             }
         },
         resetForm() {
