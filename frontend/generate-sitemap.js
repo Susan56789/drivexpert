@@ -25,7 +25,7 @@ const axios = require('axios');
         const response = await axios.get('https://drivexpert.onrender.com/api/cars');
         const cars = response.data;
         cars.forEach(car => {
-            routes.push({ url: `/cars/${car.id}`, changefreq: 'weekly', priority: 0.9 });
+            routes.push({ url: `/cars/${car._id}`, changefreq: 'weekly', priority: 0.9 });
         });
     } catch (error) {
         console.error('Error fetching cars data:', error);
