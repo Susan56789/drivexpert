@@ -3,29 +3,30 @@
         <h1 class="text-3xl font-bold mb-8">Cars Sold</h1>
         <div v-if="error" class="text-red-500 mb-4">{{ error }}</div>
         <div v-if="cars && cars.length">
-            <div v-for="car in cars" :key="car._id" class="flex flex-col justify-center mb-6">
-                <div
-                    class="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white bg-white">
-                    <div v-if="car.images && car.images.length"
-                        class="w-full md:w-1/3 bg-white grid place-items-center">
+            <div v-for="car in displayedCars" :key="car._id" class="mb-6">
+                <div class="flex rounded-xl shadow-lg bg-white border border-white">
+                    <div v-if="car.images && car.images.length" class="w-1/3">
                         <img crossorigin="anonymous" :src="getImageUrl(car.images[0].filename)" :alt="car.carName"
-                            class="w-full h-48 object-cover rounded-md" />
+                            class="h-48 w-full object-cover rounded-l-xl" />
                     </div>
-                    <div class="w-full md:w-2/3 bg-white flex flex-col space-y-2 p-3">
-                        <div class="flex justify-between items-center">
-                            <p class="text-gray-500 font-medium hidden md:block">{{ car.carName }}</p>
-                            <div class="flex items-center">
-                                <div
-                                    class="bg-yellow-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 hidden md:block">
-                                    {{ car.condition }}</div>
+                    <div class="w-2/3 p-3 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-gray-500 font-medium">{{ car.carName }}</p>
+                                <div class="flex items-center space-x-2">
+                                    <div class="bg-yellow-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">
+                                        {{ car.condition }}
+                                    </div>
+                                    <div class="bg-green-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">
+                                        {{ car.year }}
+                                    </div>
+                                </div>
                             </div>
-
-                            <div
-                                class="bg-green-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 hidden md:block">
-                                {{ car.year }}</div>
                         </div>
-                        <p class="text-xl font-black text-gray-800">{{ formatCurrency(car.price) }}</p>
-                        <p class="text-sm font-grey text-gray-800">{{ dateTime(car.createdAt) }}</p>
+                        <div>
+                            <p class="text-xl font-black text-gray-800">{{ formatCurrency(car.price) }}</p>
+                            <p class="text-sm font-grey text-gray-800">{{ dateTime(car.createdAt) }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -33,19 +34,27 @@
         <div v-else>
             <p>You haven't sold any cars yet.</p>
         </div>
+        <Pagination :total="totalPages" @page-change="changePage" />
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import Pagination from '../shop/Pagination.vue';
 
 export default {
     name: 'CarsSold',
+    components: {
+
+        Pagination
+    },
     data() {
         return {
-            cars: [], // Initialize as an empty array
-            error: null // Error message state
+            cars: [],
+            error: null,
+            currentPage: 1,
+            itemsPerPage: 4
         };
     },
     async created() {
@@ -77,6 +86,15 @@ export default {
             }
         }
     },
+    computed: {
+        displayedCars() {
+            const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+            return this.cars.slice(startIndex, startIndex + this.itemsPerPage);
+        },
+        totalPages() {
+            return Math.ceil(this.cars.length / this.itemsPerPage);
+        }
+    },
     methods: {
         formatCurrency(value) {
             const numericValue = parseFloat(value);
@@ -87,6 +105,12 @@ export default {
         },
         getImageUrl(filename) {
             return `https://drivexpert.onrender.com/api/images/${filename}`;
+        },
+        filterCars() {
+            this.currentPage = 1; // Reset to first page after filtering
+        },
+        changePage(pageNumber) {
+            this.currentPage = pageNumber;
         }
     }
 };
